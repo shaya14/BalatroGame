@@ -1,15 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Overlays;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler,
 IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
-
     [SerializeField] int _touchHeight;
     [SerializeField] float originalHeight = 50.775f; // Ask shimon how to get the original position of the object
     private Transform parentToReturnTo = null;
+    GameObject _placeHolder = null;
 
 
     private bool _toggleClick = false;
@@ -19,6 +21,13 @@ IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        _placeHolder = new GameObject();
+        _placeHolder.transform.SetParent(this.transform.parent);
+        RectTransform rectTransform = _placeHolder.AddComponent<RectTransform>();
+        rectTransform.sizeDelta = this.GetComponent<RectTransform>().sizeDelta;
+        _placeHolder.transform.SetSiblingIndex(this.transform.GetSiblingIndex());
+
+
         parentToReturnTo = this.transform.parent;
         this.transform.SetParent(this.transform.parent.parent);
         GetComponent<CanvasGroup>().blocksRaycasts = false;
@@ -33,6 +42,8 @@ IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
         this.transform.SetParent(parentToReturnTo);
         GetComponent<CanvasGroup>().blocksRaycasts = true;
+
+        Destroy(_placeHolder);
     }
 
     public void OnPointerEnter(PointerEventData eventData)

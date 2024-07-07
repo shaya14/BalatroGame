@@ -246,6 +246,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 2015324318}
     m_Modifications:
     - target: {fileID: 1252113402447254779, guid: d3cc598ef07f1f3488890fbc3730c22b, type: 3}
+      propertyPath: _heightPos
+      value: 
+      objectReference: {fileID: 1291752634}
+    - target: {fileID: 1252113402447254779, guid: d3cc598ef07f1f3488890fbc3730c22b, type: 3}
+      propertyPath: _touchHeight
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1252113402447254779, guid: d3cc598ef07f1f3488890fbc3730c22b, type: 3}
       propertyPath: _handCanvasGroup
       value: 
       objectReference: {fileID: 0}
