@@ -12,8 +12,6 @@ IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     [SerializeField] float _originalHeight = 50.775f; // Ask shimon how to get the original position of the object
     private Transform _parentToReturnTo = null;
     GameObject _placeHolder = null;
-
-
     private bool _toggleClick = false;
     private bool _isClicked = false;
 
@@ -26,7 +24,6 @@ IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
         RectTransform rectTransform = _placeHolder.AddComponent<RectTransform>();
         rectTransform.sizeDelta = this.GetComponent<RectTransform>().sizeDelta;
         _placeHolder.transform.SetSiblingIndex(this.transform.GetSiblingIndex());
-
 
         _parentToReturnTo = this.transform.parent;
         this.transform.SetParent(this.transform.parent.parent);
@@ -41,7 +38,7 @@ IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
         {
             _placeHolder.transform.SetParent(_parentToReturnTo);
         }
-        
+
         int newSiblingIndex = _parentToReturnTo.childCount;
 
         for (int i = 0; i < _parentToReturnTo.childCount; i++)
@@ -73,8 +70,6 @@ IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
         this.transform.position = new Vector3(this.transform.position.x, _originalHeight + _touchHeight, this.transform.position.z);
     }
-
-
 
     public void OnPointerExit(PointerEventData eventData)
     {
