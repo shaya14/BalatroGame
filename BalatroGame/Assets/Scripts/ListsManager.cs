@@ -6,9 +6,11 @@ public class ListsManager : MonoBehaviour
 {
     private static ListsManager _instance;
     private List<Card> _selectedCards = new List<Card>();
+    private List<Card> _hand = new List<Card>();
 
 
     public List<Card> SelectedCards => _selectedCards;
+    public List<Card> Hand => _hand;
     public static ListsManager Instance => _instance;
 
     private void Awake()
@@ -33,7 +35,7 @@ public class ListsManager : MonoBehaviour
         }
     }
 
-    public void UpdateList(Card card)
+    public void UpdateSelecedCard(Card card)
     {
         if (!_selectedCards.Contains(card))
         {
@@ -48,8 +50,20 @@ public class ListsManager : MonoBehaviour
         }
     }
 
-    public void ClearList()
+    public void ClearSelectedCardList()
     {
+        foreach (Card card in _selectedCards)
+        {
+            card.transform.localScale = new Vector3(1f, 1f, 1f);
+        }
         _selectedCards.Clear();
+    }
+
+    public void AddToHand(Card card)
+    {
+        _hand.Add(card);
+        card.transform.SetParent(HandHolder.Instance.transform);
+        card.gameObject.GetComponent<Dragable>()._disableCanvas = HandHolder.Instance.GetComponent<DisableCanvas>();
+        card.transform.localScale = new Vector3(1f, 1f, 1f);
     }
 }

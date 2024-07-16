@@ -8,17 +8,6 @@ using UnityEngine.UI;
 
 public class Card : MonoBehaviour
 {
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
+    public string _suit;
+    public string _rank;
 }

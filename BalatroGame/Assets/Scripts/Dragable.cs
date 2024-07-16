@@ -86,13 +86,13 @@ IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
         if (_toggleClick)
         {
-            ListsManager.Instance.UpdateList(_thisCard);
+            ListsManager.Instance.UpdateSelecedCard(_thisCard);
             this.transform.localScale = new Vector3(1f, 1f, 1f);
             _toggleClick = false;
         }
         else
         {
-            ListsManager.Instance.UpdateList(_thisCard);
+            ListsManager.Instance.UpdateSelecedCard(_thisCard);
             _toggleClick = true;
         }
     }
