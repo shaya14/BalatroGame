@@ -14,8 +14,7 @@ IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     GameObject _placeHolder = null;
     private bool _toggleClick = false;
     private bool _isClicked = false;
-
-
+    public DisableCanvas _disableCanvas;
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -32,6 +31,7 @@ IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 
     public void OnDrag(PointerEventData eventData)
     {
+        _disableCanvas.DisableCanvasGroup();
         this.transform.position = eventData.position;
 
         if (_placeHolder.transform.parent != _parentToReturnTo)
@@ -59,6 +59,7 @@ IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        _disableCanvas.EnableCanvasGroup();
         this.transform.SetParent(_parentToReturnTo);
         this.transform.SetSiblingIndex(_placeHolder.transform.GetSiblingIndex());
         GetComponent<CanvasGroup>().blocksRaycasts = true;
@@ -68,7 +69,8 @@ IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        this.transform.position = new Vector3(this.transform.position.x, _originalHeight + _touchHeight, this.transform.position.z);
+        //this.transform.position = new Vector3(this.transform.position.x, _originalHeight + _touchHeight, this.transform.position.z);
+        this.transform.localScale = new Vector3(1.1f, 1.1f, 1.1f);
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -76,7 +78,8 @@ IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
         if (_isClicked)
             return;
 
-        this.transform.position = new Vector3(this.transform.position.x, _originalHeight, this.transform.position.z);
+        //this.transform.position = new Vector3(this.transform.position.x, _originalHeight, this.transform.position.z);
+        this.transform.localScale = new Vector3(1f, 1f, 1f);
     }
 
     public void OnPointerClick(PointerEventData eventData)
