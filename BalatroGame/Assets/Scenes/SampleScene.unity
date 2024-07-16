@@ -254,6 +254,10 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1252113402447254779, guid: d3cc598ef07f1f3488890fbc3730c22b, type: 3}
+      propertyPath: _disableCanvas
+      value: 
+      objectReference: {fileID: 2015324323}
+    - target: {fileID: 1252113402447254779, guid: d3cc598ef07f1f3488890fbc3730c22b, type: 3}
       propertyPath: _handCanvasGroup
       value: 
       objectReference: {fileID: 0}
@@ -455,6 +459,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 2015324318}
     m_Modifications:
     - target: {fileID: 1252113402447254779, guid: d3cc598ef07f1f3488890fbc3730c22b, type: 3}
+      propertyPath: _disableCanvas
+      value: 
+      objectReference: {fileID: 2015324323}
+    - target: {fileID: 1252113402447254779, guid: d3cc598ef07f1f3488890fbc3730c22b, type: 3}
       propertyPath: _handCanvasGroup
       value: 
       objectReference: {fileID: 0}
@@ -560,6 +568,50 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6034423340068036229, guid: d3cc598ef07f1f3488890fbc3730c22b, type: 3}
   m_PrefabInstance: {fileID: 1359331761}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1041374199
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1041374201}
+  - component: {fileID: 1041374200}
+  m_Layer: 0
+  m_Name: List Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1041374200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1041374199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e82ba80395fcd14478173c0c934b10e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1041374201
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1041374199}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &1088411493 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6034423340068036229, guid: d3cc598ef07f1f3488890fbc3730c22b, type: 3}
@@ -651,6 +703,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2015324318}
     m_Modifications:
+    - target: {fileID: 1252113402447254779, guid: d3cc598ef07f1f3488890fbc3730c22b, type: 3}
+      propertyPath: _disableCanvas
+      value: 
+      objectReference: {fileID: 2015324323}
     - target: {fileID: 1252113402447254779, guid: d3cc598ef07f1f3488890fbc3730c22b, type: 3}
       propertyPath: _handCanvasGroup
       value: 
@@ -864,6 +920,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 2015324318}
     m_Modifications:
     - target: {fileID: 1252113402447254779, guid: d3cc598ef07f1f3488890fbc3730c22b, type: 3}
+      propertyPath: _disableCanvas
+      value: 
+      objectReference: {fileID: 2015324323}
+    - target: {fileID: 1252113402447254779, guid: d3cc598ef07f1f3488890fbc3730c22b, type: 3}
       propertyPath: _handCanvasGroup
       value: 
       objectReference: {fileID: 0}
@@ -972,6 +1032,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2015324318}
     m_Modifications:
+    - target: {fileID: 1252113402447254779, guid: d3cc598ef07f1f3488890fbc3730c22b, type: 3}
+      propertyPath: _disableCanvas
+      value: 
+      objectReference: {fileID: 2015324323}
     - target: {fileID: 1252113402447254779, guid: d3cc598ef07f1f3488890fbc3730c22b, type: 3}
       propertyPath: _handCanvasGroup
       value: 
@@ -1082,6 +1146,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 2015324318}
     m_Modifications:
     - target: {fileID: 1252113402447254779, guid: d3cc598ef07f1f3488890fbc3730c22b, type: 3}
+      propertyPath: _disableCanvas
+      value: 
+      objectReference: {fileID: 2015324323}
+    - target: {fileID: 1252113402447254779, guid: d3cc598ef07f1f3488890fbc3730c22b, type: 3}
       propertyPath: _handCanvasGroup
       value: 
       objectReference: {fileID: 0}
@@ -1190,6 +1258,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2015324318}
     m_Modifications:
+    - target: {fileID: 1252113402447254779, guid: d3cc598ef07f1f3488890fbc3730c22b, type: 3}
+      propertyPath: _disableCanvas
+      value: 
+      objectReference: {fileID: 2015324323}
     - target: {fileID: 1252113402447254779, guid: d3cc598ef07f1f3488890fbc3730c22b, type: 3}
       propertyPath: _handCanvasGroup
       value: 
@@ -1308,6 +1380,8 @@ GameObject:
   - component: {fileID: 2015324321}
   - component: {fileID: 2015324320}
   - component: {fileID: 2015324319}
+  - component: {fileID: 2015324323}
+  - component: {fileID: 2015324322}
   m_Layer: 5
   m_Name: Hand
   m_TagString: Untagged
@@ -1406,6 +1480,30 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2015324317}
   m_CullTransparentMesh: 1
+--- !u!225 &2015324322
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2015324317}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &2015324323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2015324317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d458314f4d68f24fbe2f40a5daf4e09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2020307628
 GameObject:
   m_ObjectHideFlags: 0

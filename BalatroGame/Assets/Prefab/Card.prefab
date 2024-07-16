@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3631840451244810928}
   - component: {fileID: 2173209211574302055}
   - component: {fileID: 5950088802159254740}
+  - component: {fileID: 3633112176168002668}
   - component: {fileID: 1252113402447254779}
   - component: {fileID: 5397189834069000461}
   - component: {fileID: -6360317322973223602}
@@ -40,7 +41,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -213.7, y: -64.5}
-  m_SizeDelta: {x: 60, y: 80}
+  m_SizeDelta: {x: 140, y: 180}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3631840451244810928
 CanvasRenderer:
@@ -121,6 +122,18 @@ MonoBehaviour:
     m_DisabledTrigger: Disabled
   m_Interactable: 1
   m_TargetGraphic: {fileID: 2173209211574302055}
+--- !u!114 &3633112176168002668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6295455718602581328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e07bb5a8fdf813145b48cc9a4e3fa093, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1252113402447254779
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,8 +146,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa86df73d39c0754f94d65eeb1ccc0f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _touchHeight: 8
-  originalHeight: 50.775
+  _thisCard: {fileID: 0}
+  _disableCanvas: {fileID: 0}
 --- !u!225 &5397189834069000461
 CanvasGroup:
   m_ObjectHideFlags: 0

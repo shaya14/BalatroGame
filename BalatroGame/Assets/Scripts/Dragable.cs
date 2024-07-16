@@ -4,6 +4,7 @@ using UnityEditor.Overlays;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
 
 public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler,
 IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
@@ -11,8 +12,14 @@ IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     private Transform _parentToReturnTo = null;
     GameObject _placeHolder = null;
     private bool _toggleClick = false;
-    private bool _isClicked = false;
+    public Card _thisCard;
     public DisableCanvas _disableCanvas;
+
+    private void Awake()
+    {
+        _thisCard = GetComponent<Card>();
+        _disableCanvas = GetComponentInParent<DisableCanvas>();
+    }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -67,14 +74,11 @@ IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        this.transform.localScale = new Vector3(1.05f, 1.05f, 1.05f);
+        this.transform.localScale = new Vector3(1.1f, 1.1f, 1.1f);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (_isClicked)
-            return;
-
         this.transform.localScale = new Vector3(1f, 1f, 1f);
     }
 
@@ -82,13 +86,13 @@ IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
         if (_toggleClick)
         {
+            ListsManager.Instance.UpdateList(_thisCard);
             this.transform.localScale = new Vector3(1f, 1f, 1f);
             _toggleClick = false;
-            _isClicked = false;
         }
         else
         {
-            _isClicked = true;
+            ListsManager.Instance.UpdateList(_thisCard);
             _toggleClick = true;
         }
     }
