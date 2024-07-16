@@ -8,8 +8,6 @@ using UnityEngine.EventSystems;
 public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler,
 IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
-    [SerializeField] int _touchHeight;
-    [SerializeField] float _originalHeight = 50.775f; // Ask shimon how to get the original position of the object
     private Transform _parentToReturnTo = null;
     GameObject _placeHolder = null;
     private bool _toggleClick = false;
@@ -69,8 +67,7 @@ IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        //this.transform.position = new Vector3(this.transform.position.x, _originalHeight + _touchHeight, this.transform.position.z);
-        this.transform.localScale = new Vector3(1.1f, 1.1f, 1.1f);
+        this.transform.localScale = new Vector3(1.05f, 1.05f, 1.05f);
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -78,7 +75,6 @@ IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
         if (_isClicked)
             return;
 
-        //this.transform.position = new Vector3(this.transform.position.x, _originalHeight, this.transform.position.z);
         this.transform.localScale = new Vector3(1f, 1f, 1f);
     }
 
@@ -86,13 +82,12 @@ IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
         if (_toggleClick)
         {
-            this.transform.position = new Vector3(this.transform.position.x, _originalHeight, this.transform.position.z);
+            this.transform.localScale = new Vector3(1f, 1f, 1f);
             _toggleClick = false;
             _isClicked = false;
         }
         else
         {
-            this.transform.position = new Vector3(this.transform.position.x, _originalHeight + _touchHeight, this.transform.position.z);
             _isClicked = true;
             _toggleClick = true;
         }
