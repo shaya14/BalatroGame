@@ -20,8 +20,6 @@ public class Card : MonoBehaviour
 
     private void Start()
     {
-    //    _sprite = Resources.Load<Sprite>("Cards/" + _suit + "_" + _rank);
         image.sprite = Resources.Load<Sprite>("Cards/" + _suit + "_" + _rank);
-        //Debug.Log("Loaded: " + _suit + "_" + _rank);
     }
 }
