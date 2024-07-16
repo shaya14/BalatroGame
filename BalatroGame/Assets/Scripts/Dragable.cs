@@ -9,8 +9,8 @@ public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     [SerializeField] int _touchHeight;
-    [SerializeField] float originalHeight = 50.775f; // Ask shimon how to get the original position of the object
-    private Transform parentToReturnTo = null;
+    [SerializeField] float _originalHeight = 50.775f; // Ask shimon how to get the original position of the object
+    private Transform _parentToReturnTo = null;
     GameObject _placeHolder = null;
 
 
@@ -28,7 +28,7 @@ IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
         _placeHolder.transform.SetSiblingIndex(this.transform.GetSiblingIndex());
 
 
-        parentToReturnTo = this.transform.parent;
+        _parentToReturnTo = this.transform.parent;
         this.transform.SetParent(this.transform.parent.parent);
         GetComponent<CanvasGroup>().blocksRaycasts = false;
     }
@@ -36,11 +36,34 @@ IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     public void OnDrag(PointerEventData eventData)
     {
         this.transform.position = eventData.position;
+
+        if (_placeHolder.transform.parent != _parentToReturnTo)
+        {
+            _placeHolder.transform.SetParent(_parentToReturnTo);
+        }
+        
+        int newSiblingIndex = _parentToReturnTo.childCount;
+
+        for (int i = 0; i < _parentToReturnTo.childCount; i++)
+        {
+            if (this.transform.position.x < _parentToReturnTo.GetChild(i).position.x)
+            {
+                newSiblingIndex = i;
+                if (_placeHolder.transform.GetSiblingIndex() < newSiblingIndex)
+                {
+                    newSiblingIndex--;
+                }
+                break;
+            }
+        }
+
+        _placeHolder.transform.SetSiblingIndex(newSiblingIndex);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        this.transform.SetParent(parentToReturnTo);
+        this.transform.SetParent(_parentToReturnTo);
+        this.transform.SetSiblingIndex(_placeHolder.transform.GetSiblingIndex());
         GetComponent<CanvasGroup>().blocksRaycasts = true;
 
         Destroy(_placeHolder);
@@ -48,7 +71,7 @@ IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        this.transform.position = new Vector3(this.transform.position.x, originalHeight + _touchHeight, this.transform.position.z);
+        this.transform.position = new Vector3(this.transform.position.x, _originalHeight + _touchHeight, this.transform.position.z);
     }
 
 
@@ -58,20 +81,20 @@ IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
         if (_isClicked)
             return;
 
-        this.transform.position = new Vector3(this.transform.position.x, originalHeight, this.transform.position.z);
+        this.transform.position = new Vector3(this.transform.position.x, _originalHeight, this.transform.position.z);
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         if (_toggleClick)
         {
-            this.transform.position = new Vector3(this.transform.position.x, originalHeight, this.transform.position.z);
+            this.transform.position = new Vector3(this.transform.position.x, _originalHeight, this.transform.position.z);
             _toggleClick = false;
             _isClicked = false;
         }
         else
         {
-            this.transform.position = new Vector3(this.transform.position.x, originalHeight + _touchHeight, this.transform.position.z);
+            this.transform.position = new Vector3(this.transform.position.x, _originalHeight + _touchHeight, this.transform.position.z);
             _isClicked = true;
             _toggleClick = true;
         }
