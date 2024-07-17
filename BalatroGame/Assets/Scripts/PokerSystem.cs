@@ -305,36 +305,71 @@ public class PokerSystem : MonoBehaviour
 
     public bool IsStraightFlush(List<Card> handToCheck)
     {
-        return IsStraight(handToCheck) && IsFlush(handToCheck);
+        if (handToCheck.Count < 5)
+        {
+            return false;
+        }
+
+        // Convert ranks to integer values and sort the hand
+        List<Card> sortedHand = new List<Card>(handToCheck);
+        sortedHand.Sort((a, b) => GetRankValue(a._rank).CompareTo(GetRankValue(b._rank)));
+
+        for (int i = 0; i <= sortedHand.Count - 5; i++)
+        {
+            List<Card> potentialStraightFlush = sortedHand.GetRange(i, 5);
+            if (IsFlush(potentialStraightFlush) && IsStraight(potentialStraightFlush))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
+
+    private int GetRankValue(string rank)
+    {
+        switch (rank)
+        {
+            case "2": return 2;
+            case "3": return 3;
+            case "4": return 4;
+            case "5": return 5;
+            case "6": return 6;
+            case "7": return 7;
+            case "8": return 8;
+            case "9": return 9;
+            case "10": return 10;
+            case "J": return 11;
+            case "Q": return 12;
+            case "K": return 13;
+            case "A": return 14;
+            default: return 0; // Handle invalid rank if necessary
+        }
+    }
+
+
 
     public bool IsRoyalFlush(List<Card> handToCheck)
     {
-        List<int> ranks = new List<int>();
-        foreach (Card card in handToCheck)
+        if (handToCheck.Count < 5)
         {
-            switch (card._rank)
+            return false;
+        }
+
+        // Convert ranks to integer values and sort the hand
+        List<Card> sortedHand = new List<Card>(handToCheck);
+        sortedHand.Sort((a, b) => GetRankValue(a._rank).CompareTo(GetRankValue(b._rank)));
+
+        for (int i = 0; i <= sortedHand.Count - 5; i++)
+        {
+            List<Card> potentialRoyalFlush = sortedHand.GetRange(i, 5);
+            if (IsFlush(potentialRoyalFlush) && IsStraight(potentialRoyalFlush) && GetRankValue(potentialRoyalFlush[0]._rank) == 10)
             {
-                case "10":
-                    ranks.Add(10);
-                    break;
-                case "J":
-                    ranks.Add(11);
-                    break;
-                case "Q":
-                    ranks.Add(12);
-                    break;
-                case "K":
-                    ranks.Add(13);
-                    break;
-                case "A":
-                    ranks.Add(14);
-                    break;
+                return true;
             }
         }
-        ranks.Sort();
-        return IsStraightFlush(handToCheck) && ranks[0] == 10;
-    }
 
+        return false;
+    }
 
 }
