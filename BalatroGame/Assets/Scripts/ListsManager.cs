@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Microsoft.Unity.VisualStudio.Editor;
@@ -67,4 +68,51 @@ public class ListsManager : MonoBehaviour
         card.gameObject.GetComponent<Dragable>()._disableCanvas = HandHolder.Instance.GetComponent<DisableCanvas>();
         card.transform.localScale = new Vector3(1f, 1f, 1f);
     }
+
+    public void DiscardHand()
+    {
+        // Make a copy of the selected cards to avoid modifying the collection while iterating
+        List<Card> cardsToDiscard = new List<Card>(_selectedCards);
+
+        foreach (Card card in cardsToDiscard)
+        {
+            try
+            {
+                if (card == null)
+                {
+                    Debug.LogWarning("Card is null. Skipping...");
+                    continue;
+                }
+
+                // Check if the card is still in the hand before attempting to remove it
+                if (_hand.Contains(card))
+                {
+                    _hand.Remove(card);
+                    card.transform.SetParent(HandHolder.Instance.DiscardedCards.transform);
+                    card.gameObject.SetActive(false);
+                }
+                else
+                {
+                    Debug.LogWarning("Card not found in hand. Skipping...");
+                }
+            }
+            catch (ObjectDisposedException ex)
+            {
+                Debug.LogError($"ObjectDisposedException: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Exception: {ex.Message}");
+            }
+        }
+
+        // Clear the selected cards after the removal
+        _selectedCards.Clear();
+
+        // If there's additional logic to add new cards to the hand, it should be done here
+        Debug.Log(DeckManager.Instance);
+        DeckManager.Instance.AddToHand(cardsToDiscard.Count);
+    }
+
+
 }

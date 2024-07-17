@@ -24,4 +24,9 @@ public class PlayerActions : MonoBehaviour
     {
         PokerSystem.Instance.DefinePokerHand(ListsManager.Instance.SelectedCards);
     }
+
+    public void DiscardHand()
+    {
+        ListsManager.Instance.DiscardHand();
+    }
 }

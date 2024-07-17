@@ -11,6 +11,17 @@ public class DeckManager : MonoBehaviour
 
     public static DeckManager Instance => _instance;
 
+    private void Awake()
+    {
+        if (_instance == null)
+        {
+            _instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
     private void Start()
     {
         CreateDeck();
@@ -52,6 +63,20 @@ public class DeckManager : MonoBehaviour
     public void AddToHand()
     {
         for (int i = 0; i < HandHolder.Instance.CardToSpawn; i++)
+        {
+            Card card = _deck[0];
+            _deck.RemoveAt(0);
+            ListsManager.Instance.AddToHand(card);
+        }
+    }
+
+    public void AddToHand(int numOfCardToAdd)
+    {
+        if(_deck.Count < numOfCardToAdd)
+        {
+            numOfCardToAdd = _deck.Count;
+        }
+        for (int i = 0; i < numOfCardToAdd; i++)
         {
             Card card = _deck[0];
             _deck.RemoveAt(0);

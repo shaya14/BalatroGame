@@ -108,19 +108,31 @@ public class PokerSystem : MonoBehaviour
 
     public bool IsTwoPair(List<Card> handToCheck)
     {
-        int pairs = 0;
-        for (int i = 0; i < handToCheck.Count; i++)
+        Dictionary<string, int> rankCount = new Dictionary<string, int>();
+        foreach (var card in handToCheck)
         {
-            for (int j = i + 1; j < handToCheck.Count; j++)
+            if (rankCount.ContainsKey(card._rank))
             {
-                if (handToCheck[i]._rank == handToCheck[j]._rank)
-                {
-                    pairs++;
-                }
+                rankCount[card._rank]++;
+            }
+            else
+            {
+                rankCount[card._rank] = 1;
             }
         }
+
+        int pairs = 0;
+        foreach (var count in rankCount.Values)
+        {
+            if (count == 2)
+            {
+                pairs++;
+            }
+        }
+
         return pairs == 2;
     }
+
 
     public bool IsThreeOfAKind(List<Card> handToCheck)
     {
@@ -189,58 +201,86 @@ public class PokerSystem : MonoBehaviour
             }
         }
         ranks.Sort();
-        for (int i = 0; i < ranks.Count - 1; i++)
+        // Check for a sequence of exactly 5 cards
+        for (int i = 0; i <= ranks.Count - 5; i++)
         {
-            if (ranks[i] + 1 != ranks[i + 1])
+            if (ranks[i] + 1 == ranks[i + 1] &&
+                ranks[i + 1] + 1 == ranks[i + 2] &&
+                ranks[i + 2] + 1 == ranks[i + 3] &&
+                ranks[i + 3] + 1 == ranks[i + 4])
             {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
+
 
     public bool IsFlush(List<Card> handToCheck)
     {
-        string suit = handToCheck[0]._suit;
-        for (int i = 1; i < handToCheck.Count; i++)
+        if (handToCheck.Count < 5)
         {
-            if (handToCheck[i]._suit != suit)
+            return false; // Not enough cards to form a flush
+        }
+
+        Dictionary<string, int> suitCount = new Dictionary<string, int>();
+        foreach (var card in handToCheck)
+        {
+            if (suitCount.ContainsKey(card._suit))
             {
-                return false;
+                suitCount[card._suit]++;
+            }
+            else
+            {
+                suitCount[card._suit] = 1;
             }
         }
-        return true;
+
+        foreach (var count in suitCount.Values)
+        {
+            if (count >= 5)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
+
 
     public bool IsFullHouse(List<Card> handToCheck)
     {
-        int pairs = 0;
-        bool threeOfAKind = false;
-        for (int i = 0; i < handToCheck.Count; i++)
+        Dictionary<string, int> rankCount = new Dictionary<string, int>();
+        foreach (var card in handToCheck)
         {
-            for (int j = i + 1; j < handToCheck.Count; j++)
+            if (rankCount.ContainsKey(card._rank))
             {
-                if (handToCheck[i]._rank == handToCheck[j]._rank)
-                {
-                    pairs++;
-                }
+                rankCount[card._rank]++;
+            }
+            else
+            {
+                rankCount[card._rank] = 1;
             }
         }
-        for (int i = 0; i < handToCheck.Count; i++)
+
+        bool hasThreeOfAKind = false;
+        bool hasPair = false;
+
+        foreach (var count in rankCount.Values)
         {
-            for (int j = i + 1; j < handToCheck.Count; j++)
+            if (count == 3)
             {
-                for (int k = j + 1; k < handToCheck.Count; k++)
-                {
-                    if (handToCheck[i]._rank == handToCheck[j]._rank && handToCheck[j]._rank == handToCheck[k]._rank)
-                    {
-                        threeOfAKind = true;
-                    }
-                }
+                hasThreeOfAKind = true;
+            }
+            if (count == 2)
+            {
+                hasPair = true;
             }
         }
-        return pairs == 1 && threeOfAKind;
+
+        return hasThreeOfAKind && hasPair;
     }
+
 
     public bool IsFourOfAKind(List<Card> handToCheck)
     {
