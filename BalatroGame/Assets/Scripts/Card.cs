@@ -15,9 +15,8 @@ public class Card : MonoBehaviour
     [SerializeField] private string _suit;
     [SerializeField] private string _rank;
     [SerializeField] private TextMeshProUGUI _piointsText;
-
     private int _pointsValue;
-
+    
     public string Suit => _suit;
     public string Rank => _rank;
 
@@ -29,6 +28,12 @@ public class Card : MonoBehaviour
     private void Start()
     {
         image.sprite = Resources.Load<Sprite>("Cards/" + _suit + "_" + _rank);
+    }
+    public void InitCard(string suit, string rank)
+    {
+        _suit = suit;
+        _rank = rank;
+        SetPointsValue(rank);
     }
 
     public void SetPointsValue(string rank)
@@ -58,12 +63,5 @@ public class Card : MonoBehaviour
     public void SetRank(string rank)
     {
         _rank = rank;
-    }
-
-    public void InitCard(string suit, string rank)
-    {
-        _suit = suit;
-        _rank = rank;
-        SetPointsValue(rank);
     }
 }
