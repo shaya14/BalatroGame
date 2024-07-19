@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5950088802159254740}
   - component: {fileID: 3633112176168002668}
   - component: {fileID: 1252113402447254779}
+  - component: {fileID: -9094731097924035783}
   - component: {fileID: 5397189834069000461}
   - component: {fileID: -6360317322973223602}
   m_Layer: 5
@@ -134,6 +135,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e07bb5a8fdf813145b48cc9a4e3fa093, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  image: {fileID: 0}
+  _sprite: {fileID: 0}
+  _suit: 
+  _rank: 
 --- !u!114 &1252113402447254779
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -148,6 +153,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _thisCard: {fileID: 0}
   _disableCanvas: {fileID: 0}
+--- !u!114 &-9094731097924035783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6295455718602581328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ae538889857e1845b83e077b98dc91c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _moveSpeed: 4
+  _rotationSpeed: 30
+  _rotationSpeedZ: 5
+  _duration: 3
 --- !u!225 &5397189834069000461
 CanvasGroup:
   m_ObjectHideFlags: 0
