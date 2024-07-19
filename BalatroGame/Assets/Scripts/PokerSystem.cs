@@ -97,7 +97,7 @@ public class PokerSystem : MonoBehaviour
         {
             for (int j = i + 1; j < handToCheck.Count; j++)
             {
-                if (handToCheck[i]._rank == handToCheck[j]._rank)
+                if (handToCheck[i].Rank == handToCheck[j].Rank)
                 {
                     return true;
                 }
@@ -111,13 +111,13 @@ public class PokerSystem : MonoBehaviour
         Dictionary<string, int> rankCount = new Dictionary<string, int>();
         foreach (var card in handToCheck)
         {
-            if (rankCount.ContainsKey(card._rank))
+            if (rankCount.ContainsKey(card.Rank))
             {
-                rankCount[card._rank]++;
+                rankCount[card.Rank]++;
             }
             else
             {
-                rankCount[card._rank] = 1;
+                rankCount[card.Rank] = 1;
             }
         }
 
@@ -142,7 +142,7 @@ public class PokerSystem : MonoBehaviour
             {
                 for (int k = j + 1; k < handToCheck.Count; k++)
                 {
-                    if (handToCheck[i]._rank == handToCheck[j]._rank && handToCheck[j]._rank == handToCheck[k]._rank)
+                    if (handToCheck[i].Rank == handToCheck[j].Rank && handToCheck[j].Rank == handToCheck[k].Rank)
                     {
                         return true;
                     }
@@ -157,7 +157,7 @@ public class PokerSystem : MonoBehaviour
         List<int> ranks = new List<int>();
         foreach (Card card in handToCheck)
         {
-            switch (card._rank)
+            switch (card.Rank)
             {
                 case "2":
                     ranks.Add(2);
@@ -226,13 +226,13 @@ public class PokerSystem : MonoBehaviour
         Dictionary<string, int> suitCount = new Dictionary<string, int>();
         foreach (var card in handToCheck)
         {
-            if (suitCount.ContainsKey(card._suit))
+            if (suitCount.ContainsKey(card.Suit))
             {
-                suitCount[card._suit]++;
+                suitCount[card.Suit]++;
             }
             else
             {
-                suitCount[card._suit] = 1;
+                suitCount[card.Suit] = 1;
             }
         }
 
@@ -253,13 +253,13 @@ public class PokerSystem : MonoBehaviour
         Dictionary<string, int> rankCount = new Dictionary<string, int>();
         foreach (var card in handToCheck)
         {
-            if (rankCount.ContainsKey(card._rank))
+            if (rankCount.ContainsKey(card.Rank))
             {
-                rankCount[card._rank]++;
+                rankCount[card.Rank]++;
             }
             else
             {
-                rankCount[card._rank] = 1;
+                rankCount[card.Rank] = 1;
             }
         }
 
@@ -292,7 +292,7 @@ public class PokerSystem : MonoBehaviour
                 {
                     for (int l = k + 1; l < handToCheck.Count; l++)
                     {
-                        if (handToCheck[i]._rank == handToCheck[j]._rank && handToCheck[j]._rank == handToCheck[k]._rank && handToCheck[k]._rank == handToCheck[l]._rank)
+                        if (handToCheck[i].Rank == handToCheck[j].Rank && handToCheck[j].Rank == handToCheck[k].Rank && handToCheck[k].Rank == handToCheck[l].Rank)
                         {
                             return true;
                         }
@@ -312,7 +312,7 @@ public class PokerSystem : MonoBehaviour
 
         // Convert ranks to integer values and sort the hand
         List<Card> sortedHand = new List<Card>(handToCheck);
-        sortedHand.Sort((a, b) => GetRankValue(a._rank).CompareTo(GetRankValue(b._rank)));
+        sortedHand.Sort((a, b) => GetRankValue(a.Rank).CompareTo(GetRankValue(b.Rank)));
 
         for (int i = 0; i <= sortedHand.Count - 5; i++)
         {
@@ -358,12 +358,12 @@ public class PokerSystem : MonoBehaviour
 
         // Convert ranks to integer values and sort the hand
         List<Card> sortedHand = new List<Card>(handToCheck);
-        sortedHand.Sort((a, b) => GetRankValue(a._rank).CompareTo(GetRankValue(b._rank)));
+        sortedHand.Sort((a, b) => GetRankValue(a.Rank).CompareTo(GetRankValue(b.Rank)));
 
         for (int i = 0; i <= sortedHand.Count - 5; i++)
         {
             List<Card> potentialRoyalFlush = sortedHand.GetRange(i, 5);
-            if (IsFlush(potentialRoyalFlush) && IsStraight(potentialRoyalFlush) && GetRankValue(potentialRoyalFlush[0]._rank) == 10)
+            if (IsFlush(potentialRoyalFlush) && IsStraight(potentialRoyalFlush) && GetRankValue(potentialRoyalFlush[0].Rank) == 10)
             {
                 return true;
             }

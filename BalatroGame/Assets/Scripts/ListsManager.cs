@@ -65,7 +65,7 @@ public class ListsManager : MonoBehaviour
     {
         _hand.Add(card);
         card.transform.SetParent(HandHolder.Instance.transform);
-        card.gameObject.GetComponent<Dragable>()._disableCanvas = HandHolder.Instance.GetComponent<DisableCanvas>();
+        card.gameObject.GetComponent<Dragable>().SetDisableCanvas(HandHolder.Instance.GetComponent<DisableCanvas>());
         card.transform.localScale = new Vector3(1f, 1f, 1f);
     }
 

@@ -39,8 +39,8 @@ public class DeckManager : MonoBehaviour
             foreach (string rank in ranks)
             {
                 Card newCard = Instantiate(_cardPrefab, transform);
-                newCard._suit = suit;
-                newCard._rank = rank;
+                newCard.SetSuit(suit);
+                newCard.SetRank(rank);
                 newCard.name = rank + " of " + suit;
                 _deck.Add(newCard);
             }

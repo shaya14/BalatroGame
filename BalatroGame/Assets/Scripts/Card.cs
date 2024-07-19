@@ -9,10 +9,13 @@ using System;
 
 public class Card : MonoBehaviour
 {
-    public Image image;
-    public Sprite _sprite;
-    public string _suit;
-    public string _rank;
+    [SerializeField] private Image image;
+    [SerializeField] private Sprite _sprite;
+    [SerializeField] private string _suit;
+    [SerializeField] private string _rank;
+
+    public string Suit => _suit;
+    public string Rank => _rank;
 
     private void Awake()
     {
@@ -22,5 +25,15 @@ public class Card : MonoBehaviour
     private void Start()
     {
         image.sprite = Resources.Load<Sprite>("Cards/" + _suit + "_" + _rank);
+    }
+
+    public void SetSuit(string suit)
+    {
+        _suit = suit;
+    }
+
+    public void SetRank(string rank)
+    {
+        _rank = rank;
     }
 }

@@ -12,8 +12,8 @@ IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     private Transform _parentToReturnTo = null;
     GameObject _placeHolder = null;
     private bool _toggleClick = false;
-    public Card _thisCard;
-    public DisableCanvas _disableCanvas;
+    [SerializeField] private Card _thisCard;
+    [SerializeField] private DisableCanvas _disableCanvas;
 
     private void Awake()
     {
@@ -95,5 +95,10 @@ IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
             ListsManager.Instance.UpdateSelecedCard(_thisCard);
             _toggleClick = true;
         }
+    }
+
+    public void SetDisableCanvas(DisableCanvas disableCanvas)
+    {
+        _disableCanvas = disableCanvas;
     }
 }
