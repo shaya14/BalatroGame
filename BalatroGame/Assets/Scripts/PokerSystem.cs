@@ -204,6 +204,7 @@ public class PokerSystem : MonoBehaviour
                     break;
                 case "A":
                     ranks.Add(14);
+                    ranks.Add(1); // Ace can also be low
                     break;
             }
         }
@@ -240,6 +241,7 @@ public class PokerSystem : MonoBehaviour
             string suit = handToCheck[0].Suit;
             foreach (var card in handToCheck)
             {
+                ListsManager.Instance.UpdateScoredCards(card);
                 if (card.Suit != suit)
                 {
                     return false;
@@ -349,8 +351,6 @@ public class PokerSystem : MonoBehaviour
             default: return 0; // Handle invalid rank if necessary
         }
     }
-
-
 
     public bool IsRoyalFlush(List<Card> handToCheck)
     {
