@@ -12,6 +12,7 @@ IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     private Transform _parentToReturnTo = null;
     GameObject _placeHolder = null;
     private bool _toggleClick = false;
+    private bool _isClicked = false;
     [SerializeField] private Card _thisCard;
     [SerializeField] private DisableCanvas _disableCanvas;
 
@@ -90,7 +91,7 @@ IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
             this.transform.localScale = new Vector3(1f, 1f, 1f);
             _toggleClick = false;
         }
-        else
+        else if (ListsManager.Instance.SelectedCards.Count < 5)
         {
             ListsManager.Instance.UpdateSelecedCard(_thisCard);
             _toggleClick = true;
