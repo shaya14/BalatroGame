@@ -12,7 +12,6 @@ IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     private Transform _parentToReturnTo = null;
     GameObject _placeHolder = null;
     private bool _toggleClick = false;
-    private bool _isClicked = false;
     [SerializeField] private Card _thisCard;
     [SerializeField] private DisableCanvas _disableCanvas;
 

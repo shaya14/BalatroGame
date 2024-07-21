@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class DeckManager : MonoBehaviour
+public class Deck : MonoBehaviour
 {
-    private static DeckManager _instance;
+    private static Deck _instance;
     [SerializeField] private Card _cardPrefab;
+    [SerializeField] private HandHolder _handHolder;
     private List<Card> _deck = new List<Card>();
 
-    public static DeckManager Instance => _instance;
+    public static Deck Instance => _instance;
 
     private void Awake()
     {
@@ -41,6 +42,7 @@ public class DeckManager : MonoBehaviour
                 Card newCard = Instantiate(_cardPrefab, transform);
                 newCard.InitCard(suit, rank);
                 newCard.name = rank + " of " + suit;
+                //newCard.gameObject.SetActive(false);
                 _deck.Add(newCard);
             }
         }
@@ -61,15 +63,26 @@ public class DeckManager : MonoBehaviour
 
     public void AddToHand()
     {
-        for (int i = 0; i < HandHolder.Instance.CardToSpawn; i++)
+        StartCoroutine(AddToHandCoroutine());
+    }
+
+    public void AddToHand(int numOfCardToAdd)
+    {
+        StartCoroutine(AddToHandCoroutine(numOfCardToAdd));
+    }
+
+    private IEnumerator AddToHandCoroutine()
+    {
+        for (int i = 0; i < _handHolder.CardToSpawn; i++)
         {
             Card card = _deck[0];
             _deck.RemoveAt(0);
             ListsManager.Instance.AddToHand(card);
+            yield return new WaitForSeconds(0.2f);
         }
     }
 
-    public void AddToHand(int numOfCardToAdd)
+    private IEnumerator AddToHandCoroutine(int numOfCardToAdd)
     {
         if(_deck.Count < numOfCardToAdd)
         {
@@ -77,6 +90,7 @@ public class DeckManager : MonoBehaviour
         }
         for (int i = 0; i < numOfCardToAdd; i++)
         {
+            yield return new WaitForSeconds(0.2f);
             Card card = _deck[0];
             _deck.RemoveAt(0);
             ListsManager.Instance.AddToHand(card);

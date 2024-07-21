@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerActions : MonoBehaviour
 {
     private static PlayerActions _instance;
+    [SerializeField] private HandHolder _handHolder;
 
     public static PlayerActions Instance => _instance;
 
@@ -23,6 +24,7 @@ public class PlayerActions : MonoBehaviour
     public void PlayHand()
     {
         PokerSystem.Instance.DefinePokerHand(ListsManager.Instance.SelectedCards);
+        ListsManager.Instance.PlayHand();   
     }
 
     public void DiscardHand()

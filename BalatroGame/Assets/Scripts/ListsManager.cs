@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Microsoft.Unity.VisualStudio.Editor;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ListsManager : MonoBehaviour
@@ -9,7 +10,8 @@ public class ListsManager : MonoBehaviour
     private static ListsManager _instance;
     private List<Card> _selectedCards = new List<Card>();
     private List<Card> _hand = new List<Card>();
-
+    [SerializeField] private HandHolder _handHolder;
+    [SerializeField] private HandHolder _playedCards;
 
     public List<Card> SelectedCards => _selectedCards;
     public List<Card> Hand => _hand;
@@ -64,8 +66,9 @@ public class ListsManager : MonoBehaviour
     public void AddToHand(Card card)
     {
         _hand.Add(card);
-        card.transform.SetParent(HandHolder.Instance.transform);
-        card.gameObject.GetComponent<Dragable>().SetDisableCanvas(HandHolder.Instance.GetComponent<DisableCanvas>());
+        card.gameObject.SetActive(true);
+        card.transform.SetParent(_handHolder.transform);
+        card.gameObject.GetComponent<Dragable>().SetDisableCanvas(_handHolder.GetComponent<DisableCanvas>());
         card.transform.localScale = new Vector3(1f, 1f, 1f);
     }
 
@@ -88,7 +91,7 @@ public class ListsManager : MonoBehaviour
                 if (_hand.Contains(card))
                 {
                     _hand.Remove(card);
-                    card.transform.SetParent(HandHolder.Instance.DiscardedCards.transform);
+                    card.transform.SetParent(_handHolder.DiscardedCards.transform);
                     card.gameObject.SetActive(false);
                 }
                 else
@@ -110,9 +113,22 @@ public class ListsManager : MonoBehaviour
         _selectedCards.Clear();
 
         // If there's additional logic to add new cards to the hand, it should be done here
-        Debug.Log(DeckManager.Instance);
-        DeckManager.Instance.AddToHand(cardsToDiscard.Count);
+        Debug.Log(Deck.Instance);
+        Deck.Instance.AddToHand(cardsToDiscard.Count);
     }
 
+    public void PlayHand()
+    {
+        foreach (Card card in _selectedCards)
+        {
+            card.transform.SetParent(_playedCards.transform);
+            StartCoroutine(DelayedDiscardHand(3));
+        }
+    }
 
+    private IEnumerator DelayedDiscardHand(int seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        DiscardHand();
+    }
 }
