@@ -47,6 +47,11 @@ public class ListsManager : MonoBehaviour
         _scoredCards.Add(card);
     }
 
+    public void ClearScoredCards()
+    {
+        _scoredCards.Clear();
+    }
+
     public void UpdateSelecedCard(Card card)
     {
         if (!_selectedCards.Contains(card))

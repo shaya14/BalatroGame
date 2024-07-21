@@ -89,6 +89,7 @@ public class PokerSystem : MonoBehaviour
         {
             _handType = HandType.HighCard;
             Debug.Log("High Card");
+            FindHighestCard(handToCheck);
         }
     }
 
@@ -126,22 +127,64 @@ public class PokerSystem : MonoBehaviour
         }
 
         HashSet<string> royalRanks = new HashSet<string> { "10", "J", "Q", "K", "A" };
-        return handToCheck.All(card => royalRanks.Contains(card.Rank));
+        bool isRoyalFlush = handToCheck.All(card => royalRanks.Contains(card.Rank));
+
+        if (isRoyalFlush)
+        {
+            // Clear previous scored cards and add only the Royal Flush cards
+            ListsManager.Instance.ClearScoredCards();
+            foreach (var card in handToCheck)
+            {
+                ListsManager.Instance.UpdateScoredCards(card);
+            }
+        }
+
+        return isRoyalFlush;
     }
 
     public bool IsPair(List<Card> handToCheck)
     {
-        return handToCheck.GroupBy(card => card.Rank).Any(group => group.Count() == 2);
+        var pair = handToCheck.GroupBy(card => card.Rank).FirstOrDefault(group => group.Count() == 2);
+        if (pair != null)
+        {
+            foreach (var card in pair)
+            {
+                ListsManager.Instance.UpdateScoredCards(card);
+            }
+            return true;
+        }
+        return false;
     }
 
     public bool IsTwoPair(List<Card> handToCheck)
     {
-        return handToCheck.GroupBy(card => card.Rank).Count(group => group.Count() == 2) == 2;
+        var pairs = handToCheck.GroupBy(card => card.Rank).Where(group => group.Count() == 2).ToList();
+        if (pairs.Count == 2)
+        {
+            foreach (var pair in pairs)
+            {
+                foreach (var card in pair)
+                {
+                    ListsManager.Instance.UpdateScoredCards(card);
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     public bool IsThreeOfAKind(List<Card> handToCheck)
     {
-        return handToCheck.GroupBy(card => card.Rank).Any(group => group.Count() == 3);
+        var threeOfAKind = handToCheck.GroupBy(card => card.Rank).FirstOrDefault(group => group.Count() == 3);
+        if (threeOfAKind != null)
+        {
+            foreach (var card in threeOfAKind)
+            {
+                ListsManager.Instance.UpdateScoredCards(card);
+            }
+            return true;
+        }
+        return false;
     }
 
     public bool IsStraight(List<Card> handToCheck)
@@ -160,6 +203,12 @@ public class PokerSystem : MonoBehaviour
                 ranks[i + 2] + 1 == ranks[i + 3] &&
                 ranks[i + 3] + 1 == ranks[i + 4])
             {
+                // Clear previous scored cards and add the new ones
+                ListsManager.Instance.ClearScoredCards();
+                for (int j = i; j < i + 5; j++)
+                {
+                    ListsManager.Instance.UpdateScoredCards(handToCheck[j]);
+                }
                 return true;
             }
         }
@@ -167,6 +216,15 @@ public class PokerSystem : MonoBehaviour
         // Check for Ace-low straight
         if (ranks.Contains(14) && ranks.Contains(2) && ranks.Contains(3) && ranks.Contains(4) && ranks.Contains(5))
         {
+            // Clear previous scored cards and add the new ones
+            ListsManager.Instance.ClearScoredCards();
+            foreach (var card in handToCheck)
+            {
+                if (GetRankValue(card.Rank) == 14 || GetRankValue(card.Rank) <= 5)
+                {
+                    ListsManager.Instance.UpdateScoredCards(card);
+                }
+            }
             return true;
         }
 
@@ -181,7 +239,19 @@ public class PokerSystem : MonoBehaviour
         }
 
         string suit = handToCheck[0].Suit;
-        return handToCheck.All(card => card.Suit == suit);
+        bool isFlush = handToCheck.All(card => card.Suit == suit);
+
+        if (isFlush)
+        {
+            // Clear previous scored cards and add the new ones
+            ListsManager.Instance.ClearScoredCards();
+            foreach (var card in handToCheck)
+            {
+                ListsManager.Instance.UpdateScoredCards(card);
+            }
+        }
+
+        return isFlush;
     }
 
     public bool IsFullHouse(List<Card> handToCheck)
@@ -189,18 +259,61 @@ public class PokerSystem : MonoBehaviour
         var groupedRanks = handToCheck.GroupBy(card => card.Rank).ToList();
         bool hasThreeOfAKind = groupedRanks.Any(group => group.Count() == 3);
         bool hasPair = groupedRanks.Any(group => group.Count() == 2);
-        return hasThreeOfAKind && hasPair;
+
+        if (hasThreeOfAKind && hasPair)
+        {
+            // Clear previous scored cards and add the new ones
+            ListsManager.Instance.ClearScoredCards();
+            foreach (var group in groupedRanks)
+            {
+                foreach (var card in group)
+                {
+                    ListsManager.Instance.UpdateScoredCards(card);
+                }
+            }
+            return true;
+        }
+
+        return false;
     }
 
     public bool IsFourOfAKind(List<Card> handToCheck)
     {
-        return handToCheck.GroupBy(card => card.Rank).Any(group => group.Count() == 4);
+        var fourOfAKind = handToCheck.GroupBy(card => card.Rank).FirstOrDefault(group => group.Count() == 4);
+        if (fourOfAKind != null)
+        {
+            // Clear previous scored cards and add the new ones
+            ListsManager.Instance.ClearScoredCards();
+            foreach (var card in fourOfAKind)
+            {
+                ListsManager.Instance.UpdateScoredCards(card);
+            }
+            return true;
+        }
+        return false;
     }
 
     public bool IsStraightFlush(List<Card> handToCheck)
     {
-        return IsFlush(handToCheck) && IsStraight(handToCheck);
+        if (IsFlush(handToCheck) && IsStraight(handToCheck))
+        {
+            // Clear previous scored cards and add the new ones
+            ListsManager.Instance.ClearScoredCards();
+            foreach (var card in handToCheck)
+            {
+                ListsManager.Instance.UpdateScoredCards(card);
+            }
+            return true;
+        }
+        return false;
+    }
+    public void FindHighestCard(List<Card> handToCheck)
+    {
+        var highestCard = handToCheck.OrderByDescending(card => GetRankValue(card.Rank)).FirstOrDefault();
+        if (highestCard != null)
+        {
+            ListsManager.Instance.UpdateScoredCards(highestCard);
+            Debug.Log("Highest Card: " + highestCard.Rank);
+        }
     }
 }
-
-
