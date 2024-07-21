@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlayerActions : MonoBehaviour
 {
     private static PlayerActions _instance;
-    [SerializeField] private HandHolder _handHolder;
     public static PlayerActions Instance => _instance;
 
     private void Awake()

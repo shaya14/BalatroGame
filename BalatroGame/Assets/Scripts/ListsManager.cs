@@ -13,6 +13,7 @@ public class ListsManager : MonoBehaviour
     public List<Card> _scoredCards = new List<Card>();
     [SerializeField] private HandHolder _handHolder;
     [SerializeField] private HandHolder _playedCards;
+    [SerializeField] private DisableCanvas _disableCanvas;
     private bool _isPlayingHand = false;
 
     public bool IsPlayingHand => _isPlayingHand;
@@ -146,6 +147,7 @@ public class ListsManager : MonoBehaviour
         foreach (Card card in _selectedCards)
         {
             card.transform.SetParent(_playedCards.transform);
+            _disableCanvas.DisableCanvasGroup();
             yield return new WaitForSeconds(0.2f);
         }
         StartCoroutine(DelayedDiscardHand(3));
@@ -158,5 +160,6 @@ public class ListsManager : MonoBehaviour
         yield return new WaitForSeconds(1);
         _scoredCards.Clear();
         _isPlayingHand = false;
+        _disableCanvas.EnableCanvasGroup();
     }
 }

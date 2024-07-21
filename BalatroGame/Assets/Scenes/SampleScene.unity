@@ -756,8 +756,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e82ba80395fcd14478173c0c934b10e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _scoredCards: []
   _handHolder: {fileID: 2015324324}
   _playedCards: {fileID: 586069147}
+  _disableCanvas: {fileID: 586069143}
 --- !u!4 &1041374201
 Transform:
   m_ObjectHideFlags: 0
@@ -1154,7 +1156,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bff6943b6511594a864e4fdb7aa9ffc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _handHolder: {fileID: 0}
 --- !u!1 &1509152003
 GameObject:
   m_ObjectHideFlags: 0
