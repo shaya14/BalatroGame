@@ -6,7 +6,6 @@ public class PlayerActions : MonoBehaviour
 {
     private static PlayerActions _instance;
     [SerializeField] private HandHolder _handHolder;
-
     public static PlayerActions Instance => _instance;
 
     private void Awake()
@@ -23,8 +22,7 @@ public class PlayerActions : MonoBehaviour
 
     public void PlayHand()
     {
-        PokerSystem.Instance.DefinePokerHand(ListsManager.Instance.SelectedCards);
-        ListsManager.Instance.PlayHand();   
+        ListsManager.Instance.PlayedHand();
     }
 
     public void DiscardHand()

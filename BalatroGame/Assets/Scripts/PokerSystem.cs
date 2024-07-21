@@ -99,6 +99,8 @@ public class PokerSystem : MonoBehaviour
             {
                 if (handToCheck[i].Rank == handToCheck[j].Rank)
                 {
+                    ListsManager.Instance.UpdateScoredCards(handToCheck[i]);
+                    ListsManager.Instance.UpdateScoredCards(handToCheck[j]);
                     return true;
                 }
             }
@@ -114,6 +116,8 @@ public class PokerSystem : MonoBehaviour
             if (rankCount.ContainsKey(card.Rank))
             {
                 rankCount[card.Rank]++;
+                ListsManager.Instance.UpdateScoredCards(card);
+                ListsManager.Instance.UpdateScoredCards(card);
             }
             else
             {
@@ -144,6 +148,9 @@ public class PokerSystem : MonoBehaviour
                 {
                     if (handToCheck[i].Rank == handToCheck[j].Rank && handToCheck[j].Rank == handToCheck[k].Rank)
                     {
+                        ListsManager.Instance.UpdateScoredCards(handToCheck[i]);
+                        ListsManager.Instance.UpdateScoredCards(handToCheck[j]);
+                        ListsManager.Instance.UpdateScoredCards(handToCheck[k]);
                         return true;
                     }
                 }
@@ -209,6 +216,11 @@ public class PokerSystem : MonoBehaviour
                 ranks[i + 2] + 1 == ranks[i + 3] &&
                 ranks[i + 3] + 1 == ranks[i + 4])
             {
+                ListsManager.Instance.UpdateScoredCards(handToCheck[i]);
+                ListsManager.Instance.UpdateScoredCards(handToCheck[i + 1]);
+                ListsManager.Instance.UpdateScoredCards(handToCheck[i + 2]);
+                ListsManager.Instance.UpdateScoredCards(handToCheck[i + 3]);
+                ListsManager.Instance.UpdateScoredCards(handToCheck[i + 4]);
                 return true;
             }
         }
@@ -222,28 +234,19 @@ public class PokerSystem : MonoBehaviour
         {
             return false; // Not enough cards to form a flush
         }
-
-        Dictionary<string, int> suitCount = new Dictionary<string, int>();
-        foreach (var card in handToCheck)
+        else if (handToCheck.Count == 5)
         {
-            if (suitCount.ContainsKey(card.Suit))
+            // Check if all cards have the same suit
+            string suit = handToCheck[0].Suit;
+            foreach (var card in handToCheck)
             {
-                suitCount[card.Suit]++;
+                if (card.Suit != suit)
+                {
+                    return false;
+                }
             }
-            else
-            {
-                suitCount[card.Suit] = 1;
-            }
+            return true;
         }
-
-        foreach (var count in suitCount.Values)
-        {
-            if (count >= 5)
-            {
-                return true;
-            }
-        }
-
         return false;
     }
 

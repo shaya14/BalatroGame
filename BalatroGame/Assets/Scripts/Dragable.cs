@@ -90,7 +90,7 @@ IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
             this.transform.localScale = new Vector3(1f, 1f, 1f);
             _toggleClick = false;
         }
-        else if (ListsManager.Instance.SelectedCards.Count < 5)
+        else if (ListsManager.Instance.SelectedCards.Count < 5 && !ListsManager.Instance.IsPlayingHand)
         {
             ListsManager.Instance.UpdateSelecedCard(_thisCard);
             _toggleClick = true;

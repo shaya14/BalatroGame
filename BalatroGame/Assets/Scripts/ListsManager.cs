@@ -10,9 +10,12 @@ public class ListsManager : MonoBehaviour
     private static ListsManager _instance;
     private List<Card> _selectedCards = new List<Card>();
     private List<Card> _hand = new List<Card>();
+    public List<Card> _scoredCards = new List<Card>();
     [SerializeField] private HandHolder _handHolder;
     [SerializeField] private HandHolder _playedCards;
+    private bool _isPlayingHand = false;
 
+    public bool IsPlayingHand => _isPlayingHand;
     public List<Card> SelectedCards => _selectedCards;
     public List<Card> Hand => _hand;
     public static ListsManager Instance => _instance;
@@ -37,6 +40,11 @@ public class ListsManager : MonoBehaviour
                 card.transform.localScale = new Vector3(1.1f, 1.1f, 1.1f);
             }
         }
+    }
+
+    public void UpdateScoredCards(Card card)
+    {
+        _scoredCards.Add(card);
     }
 
     public void UpdateSelecedCard(Card card)
@@ -117,18 +125,33 @@ public class ListsManager : MonoBehaviour
         Deck.Instance.AddToHand(cardsToDiscard.Count);
     }
 
-    public void PlayHand()
+    public void PlayedHand()
+    {
+        if (_isPlayingHand)
+        {
+            return;
+        }
+        PokerSystem.Instance.DefinePokerHand(_selectedCards);
+        StartCoroutine(PlayedHandCoroutine());
+        _isPlayingHand = true;
+    }
+
+    private IEnumerator PlayedHandCoroutine()
     {
         foreach (Card card in _selectedCards)
         {
             card.transform.SetParent(_playedCards.transform);
-            StartCoroutine(DelayedDiscardHand(3));
+            yield return new WaitForSeconds(0.2f);
         }
+        StartCoroutine(DelayedDiscardHand(3));
     }
 
     private IEnumerator DelayedDiscardHand(int seconds)
     {
         yield return new WaitForSeconds(seconds);
         DiscardHand();
+        yield return new WaitForSeconds(1);
+        _scoredCards.Clear();
+        _isPlayingHand = false;
     }
 }
