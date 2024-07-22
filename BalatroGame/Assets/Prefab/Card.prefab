@@ -274,10 +274,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   image: {fileID: 0}
-  _sprite: {fileID: 0}
-  _suit: 
-  _rank: 
-  _pointsText: {fileID: 7031070293426966421}
+  pointsText: {fileID: 7031070293426966421}
+  sprite: {fileID: 0}
+  suit: 
+  rank: 
   fadeDuration: 0.3
 --- !u!114 &1252113402447254779
 MonoBehaviour:
@@ -306,10 +306,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ae538889857e1845b83e077b98dc91c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 4
-  _rotationSpeed: 30
-  _rotationSpeedZ: 5
-  _duration: 3
+  moveSpeed: 4
+  rotationSpeed: 30
+  rotationSpeedZ: 5
+  duration: 3
 --- !u!225 &5397189834069000461
 CanvasGroup:
   m_ObjectHideFlags: 0

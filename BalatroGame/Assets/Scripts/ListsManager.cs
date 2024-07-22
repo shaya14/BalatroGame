@@ -1,25 +1,32 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Microsoft.Unity.VisualStudio.Editor;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ListsManager : MonoBehaviour
 {
+    // Singleton instance
     private static ListsManager _instance;
+
+    // Card lists
     private List<Card> _selectedCards = new List<Card>();
     private List<Card> _hand = new List<Card>();
-    public List<Card> _scoredCards = new List<Card>();
+    private List<Card> _scoredCards = new List<Card>();
+
+    // Serialized fields
     [SerializeField] private HandHolder _handHolder;
     [SerializeField] private HandHolder _playedCards;
     [SerializeField] private DisableCanvas _disableCanvas;
+
+    // Flags
     private bool _isPlayingHand = false;
-    private bool _isScoringHand = false;
-    private bool _isCoroutineRunning = false; // Flag to track if the coroutine is running
+    private bool _isCoroutineRunning = false;
+
+    // Card positions
     private float _originalYPositon = 145.74f;
     private float _playedCardOriginalYPosition = 125.74f;
 
+    // Properties
     public bool IsPlayingHand => _isPlayingHand;
     public List<Card> SelectedCards => _selectedCards;
     public List<Card> Hand => _hand;
@@ -36,7 +43,17 @@ public class ListsManager : MonoBehaviour
             Destroy(this);
         }
     }
-    public void Update()
+
+    private void Update()
+    {
+        UpdateSelectedCardsPosition();
+        if (_scoredCards.Count > 0 && !_isCoroutineRunning)
+        {
+            StartCoroutine(DelayedScoredCards(_scoredCards, 1));
+        }
+    }
+
+    private void UpdateSelectedCardsPosition()
     {
         if (_selectedCards.Count > 0)
         {
@@ -56,12 +73,6 @@ public class ListsManager : MonoBehaviour
                 }
             }
         }
-
-        if (_scoredCards.Count > 0 && !_isCoroutineRunning)
-        {
-            _isScoringHand = true;
-            StartCoroutine(DelayedScoredCards(_scoredCards, 1));
-        }
     }
 
     public void UpdateScoredCards(Card card)
@@ -74,7 +85,7 @@ public class ListsManager : MonoBehaviour
         _scoredCards.Clear();
     }
 
-    public void UpdateSelecedCard(Card card)
+    public void UpdateSelectedCard(Card card)
     {
         if (!_selectedCards.Contains(card))
         {
@@ -94,8 +105,7 @@ public class ListsManager : MonoBehaviour
         foreach (Card card in _selectedCards)
         {
             card.GetComponent<RectTransform>().localPosition =
-            new Vector3(card.GetComponent<RectTransform>().localPosition.x,
-            _originalYPositon, card.GetComponent<RectTransform>().localPosition.z);
+                new Vector3(card.GetComponent<RectTransform>().localPosition.x, _originalYPositon, card.GetComponent<RectTransform>().localPosition.z);
         }
         _selectedCards.Clear();
     }
@@ -108,12 +118,9 @@ public class ListsManager : MonoBehaviour
         card.gameObject.GetComponent<Dragable>().SetDisableCanvas(_handHolder.GetComponent<DisableCanvas>());
         card.transform.localScale = new Vector3(1f, 1f, 1f);
     }
-
     public void DiscardHand()
     {
-        // Make a copy of the selected cards to avoid modifying the collection while iterating
         List<Card> cardsToDiscard = new List<Card>(_selectedCards);
-
         foreach (Card card in cardsToDiscard)
         {
             try
@@ -124,7 +131,6 @@ public class ListsManager : MonoBehaviour
                     continue;
                 }
 
-                // Check if the card is still in the hand before attempting to remove it
                 if (_hand.Contains(card))
                 {
                     _hand.Remove(card);
@@ -146,20 +152,51 @@ public class ListsManager : MonoBehaviour
             }
         }
 
-        // Clear the selected cards after the removal
         _selectedCards.Clear();
+        Deck.Instance.AddToHand(cardsToDiscard.Count);
+    }
 
-        // If there's additional logic to add new cards to the hand, it should be done here
-        Debug.Log(Deck.Instance);
+    public void DiscardHand(List<Card> cardsToDiscard)
+    {
+        foreach (Card card in cardsToDiscard)
+        {
+            try
+            {
+                if (card == null)
+                {
+                    Debug.LogWarning("Card is null. Skipping...");
+                    continue;
+                }
+
+                if (_hand.Contains(card))
+                {
+                    _hand.Remove(card);
+                    card.transform.SetParent(_handHolder.DiscardedCards.transform);
+                    card.gameObject.SetActive(false);
+                }
+                else
+                {
+                    Debug.LogWarning("Card not found in hand. Skipping...");
+                }
+            }
+            catch (ObjectDisposedException ex)
+            {
+                Debug.LogError($"ObjectDisposedException: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Exception: {ex.Message}");
+            }
+        }
+
+        _selectedCards.Clear();
         Deck.Instance.AddToHand(cardsToDiscard.Count);
     }
 
     public void PlayedHand()
     {
-        if (_isPlayingHand)
-        {
-            return;
-        }
+        if (_isPlayingHand) return;
+
         PokerSystem.Instance.DefinePokerHand(_selectedCards);
         StartCoroutine(PlayedHandCoroutine());
         _isPlayingHand = true;
@@ -179,17 +216,16 @@ public class ListsManager : MonoBehaviour
     private IEnumerator DelayedDiscardHand(int seconds)
     {
         Debug.Log("DelayedDiscardHand coroutine started");
+        List<Card> cardsToDiscard = new List<Card>(_selectedCards);
         yield return new WaitForSeconds(seconds);
-        DiscardHand();
+        DiscardHand(cardsToDiscard);
         yield return new WaitForSeconds(1);
-        _scoredCards.Clear();
-        _isPlayingHand = false;
         _disableCanvas.EnableCanvasGroup();
     }
 
     private IEnumerator DelayedScoredCards(List<Card> scoreCards, int seconds)
     {
-        _isCoroutineRunning = true; // Set the flag to true
+        _isCoroutineRunning = true;
         Debug.Log("DelayedScoredCards coroutine started");
 
         yield return new WaitForSeconds(seconds);
@@ -198,7 +234,6 @@ public class ListsManager : MonoBehaviour
         {
             RectTransform rectTransform = card.GetComponent<RectTransform>();
             rectTransform.localPosition = new Vector3(rectTransform.localPosition.x, _playedCardOriginalYPosition + 40, rectTransform.localPosition.z);
-            //Debug.Log("Card position updated: " + card.name);
             yield return new WaitForSeconds(0.2f);
         }
 
@@ -207,22 +242,18 @@ public class ListsManager : MonoBehaviour
         foreach (Card card in scoreCards)
         {
             card.SetTextEnabled(true);
-            //Debug.Log("Enabling text for card: " + card.name);
             yield return new WaitForSeconds(0.2f);
         }
 
         yield return new WaitForSeconds(2);
-
-        ClearScoredCards();
         StartCoroutine(DelayedDiscardHand(3));
+        ClearSelectedCardList();
+        ClearScoredCards();
 
         yield return new WaitForSeconds(1);
 
-        _isScoringHand = false;
         _isCoroutineRunning = false;
         _isPlayingHand = false;
         Debug.Log("DelayedScoredCards coroutine ended");
     }
-
-
 }

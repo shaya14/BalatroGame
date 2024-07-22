@@ -1,67 +1,66 @@
-
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.EventSystems;
-using System.Collections.Generic;
-using System.Collections;
 using UnityEngine.UI;
-using System;
 using TMPro;
+using System.Collections;
 
 public class Card : MonoBehaviour
 {
-    [SerializeField] private Image image;
+    // Serialized fields
+    [SerializeField] private Image _image;
+    [SerializeField] private TextMeshProUGUI _pointsText;
     [SerializeField] private Sprite _sprite;
     [SerializeField] private string _suit;
     [SerializeField] private string _rank;
-    [SerializeField] private TextMeshProUGUI _pointsText;
-    private int _pointsValue;
-    [SerializeField] private float fadeDuration = 2.0f;
-    private Color originalColor;
+    [SerializeField] private float _fadeDuration = 2.0f;
 
+    // Private fields
+    private int _pointsValue;
+
+    // Properties
     public string Suit => _suit;
     public string Rank => _rank;
 
     private void Awake()
     {
-        image = GetComponent<Image>();
-        originalColor = _pointsText.color;
+        _image = GetComponent<Image>();
     }
 
     private void Start()
     {
-        image.sprite = Resources.Load<Sprite>("Cards/" + _suit + "_" + _rank);
+        LoadCardSprite();
     }
+
     public void InitCard(string suit, string rank)
     {
-        _suit = suit;
-        _rank = rank;
+        this._suit = suit;
+        this._rank = rank;
         SetPointsValue(rank);
+        LoadCardSprite();
+    }
+
+    private void LoadCardSprite()
+    {
+        _image.sprite = Resources.Load<Sprite>($"Cards/{_suit}_{_rank}");
     }
 
     public void SetPointsValue(string rank)
     {
-        if (rank == "J" || rank == "Q" || rank == "K")
+        _pointsValue = rank switch
         {
-            _pointsValue = 10;
-            _pointsText.text = "+" + _pointsValue.ToString();
-        }
-        else if (rank == "A")
-        {
-            _pointsValue = 11;
-            _pointsText.text = "+" + _pointsValue.ToString();
-        }
-        else
-        {
-            _pointsValue = int.Parse(rank);
-            _pointsText.text = "+" + _pointsValue.ToString();
-        }
+            "J" or "Q" or "K" => 10,
+            "A" => 11,
+            _ => int.TryParse(rank, out var value) ? value : 0
+        };
+        _pointsText.text = $"+{_pointsValue}";
     }
 
     public void SetTextEnabled(bool value)
     {
         _pointsText.gameObject.SetActive(value);
-        StartCoroutine(FadeOutText());
+        if (value)
+        {
+            StartCoroutine(FadeOutText());
+        }
     }
 
     private IEnumerator FadeOutText()
@@ -70,10 +69,10 @@ public class Card : MonoBehaviour
         float elapsedTime = 0f;
         Color startColor = _pointsText.color;
 
-        while (elapsedTime < fadeDuration)
+        while (elapsedTime < _fadeDuration)
         {
             elapsedTime += Time.deltaTime;
-            float alpha = Mathf.Lerp(1f, 0f, elapsedTime / fadeDuration);
+            float alpha = Mathf.Lerp(1f, 0f, elapsedTime / _fadeDuration);
             _pointsText.color = new Color(startColor.r, startColor.g, startColor.b, alpha);
             yield return null;
         }
@@ -84,11 +83,13 @@ public class Card : MonoBehaviour
 
     public void SetSuit(string suit)
     {
-        _suit = suit;
+        this._suit = suit;
+        LoadCardSprite();
     }
 
     public void SetRank(string rank)
     {
-        _rank = rank;
+        this._rank = rank;
+        LoadCardSprite();
     }
 }

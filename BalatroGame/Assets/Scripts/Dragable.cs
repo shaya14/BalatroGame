@@ -1,21 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Overlays;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
-public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler,
-IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
-    private Transform _parentToReturnTo = null;
-    GameObject _placeHolder = null;
-    private bool _toggleClick = false;
+    // Serialized fields
     [SerializeField] private Card _thisCard;
     [SerializeField] private DisableCanvas _disableCanvas;
     [SerializeField] private float _originalPositon = 145.74f;
 
+    // Private fields
+    private Transform _parentToReturnTo;
+    private GameObject _placeHolder;
+    private bool _toggleClick;
     private RectTransform _rectTransform;
 
     private void Awake()
@@ -27,22 +26,70 @@ IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        _placeHolder = new GameObject();
-        _placeHolder.transform.SetParent(this.transform.parent);
-        RectTransform rectTransform = _placeHolder.AddComponent<RectTransform>();
-        rectTransform.sizeDelta = this.GetComponent<RectTransform>().sizeDelta;
-        _placeHolder.transform.SetSiblingIndex(this.transform.GetSiblingIndex());
+        CreatePlaceholder();
 
-        _parentToReturnTo = this.transform.parent;
-        this.transform.SetParent(this.transform.parent.parent);
+        _parentToReturnTo = transform.parent;
+        transform.SetParent(transform.parent.parent);
         GetComponent<CanvasGroup>().blocksRaycasts = false;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
         _disableCanvas.DisableCanvasGroup();
-        this.transform.position = eventData.position;
+        transform.position = eventData.position;
+        UpdatePlaceholderPosition();
+    }
 
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        _disableCanvas.EnableCanvasGroup();
+        transform.SetParent(_parentToReturnTo);
+        transform.SetSiblingIndex(_placeHolder.transform.GetSiblingIndex());
+        GetComponent<CanvasGroup>().blocksRaycasts = true;
+        Destroy(_placeHolder);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        transform.localScale = new Vector3(1.1f, 1.1f, 1.1f);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        transform.localScale = new Vector3(1f, 1f, 1f);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (_toggleClick)
+        {
+            ListsManager.Instance.UpdateSelectedCard(_thisCard);
+            _rectTransform.localPosition = new Vector3(_rectTransform.localPosition.x, _originalPositon, _rectTransform.localPosition.z);
+            _toggleClick = false;
+        }
+        else if (ListsManager.Instance.SelectedCards.Count < 5 && !ListsManager.Instance.IsPlayingHand)
+        {
+            ListsManager.Instance.UpdateSelectedCard(_thisCard);
+            _toggleClick = true;
+        }
+    }
+
+    public void SetDisableCanvas(DisableCanvas disableCanvas)
+    {
+        _disableCanvas = disableCanvas;
+    }
+
+    private void CreatePlaceholder()
+    {
+        _placeHolder = new GameObject();
+        _placeHolder.transform.SetParent(transform.parent);
+        RectTransform rectTransform = _placeHolder.AddComponent<RectTransform>();
+        rectTransform.sizeDelta = GetComponent<RectTransform>().sizeDelta;
+        _placeHolder.transform.SetSiblingIndex(transform.GetSiblingIndex());
+    }
+
+    private void UpdatePlaceholderPosition()
+    {
         if (_placeHolder.transform.parent != _parentToReturnTo)
         {
             _placeHolder.transform.SetParent(_parentToReturnTo);
@@ -52,7 +99,7 @@ IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 
         for (int i = 0; i < _parentToReturnTo.childCount; i++)
         {
-            if (this.transform.position.x < _parentToReturnTo.GetChild(i).position.x)
+            if (transform.position.x < _parentToReturnTo.GetChild(i).position.x)
             {
                 newSiblingIndex = i;
                 if (_placeHolder.transform.GetSiblingIndex() < newSiblingIndex)
@@ -64,45 +111,5 @@ IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
         }
 
         _placeHolder.transform.SetSiblingIndex(newSiblingIndex);
-    }
-
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        _disableCanvas.EnableCanvasGroup();
-        this.transform.SetParent(_parentToReturnTo);
-        this.transform.SetSiblingIndex(_placeHolder.transform.GetSiblingIndex());
-        GetComponent<CanvasGroup>().blocksRaycasts = true;
-
-        Destroy(_placeHolder);
-    }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        this.transform.localScale = new Vector3(1.1f, 1.1f, 1.1f);
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        this.transform.localScale = new Vector3(1f, 1f, 1f);
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        if (_toggleClick)
-        {
-            ListsManager.Instance.UpdateSelecedCard(_thisCard);
-            _rectTransform.localPosition = new Vector3(_rectTransform.localPosition.x, _originalPositon, _rectTransform.localPosition.z);
-            _toggleClick = false;
-        }
-        else if (ListsManager.Instance.SelectedCards.Count < 5 && !ListsManager.Instance.IsPlayingHand)
-        {
-            ListsManager.Instance.UpdateSelecedCard(_thisCard);
-            _toggleClick = true;
-        }
-    }
-
-    public void SetDisableCanvas(DisableCanvas disableCanvas)
-    {
-        _disableCanvas = disableCanvas;
     }
 }

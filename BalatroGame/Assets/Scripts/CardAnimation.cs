@@ -1,77 +1,56 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CardAnimation : MonoBehaviour
 {
-    [SerializeField] private float _moveSpeed;
-    [SerializeField] private float _rotationSpeed;
-    [SerializeField] private float _rotationSpeedZ;
-    [SerializeField] private float _duration;
+    [SerializeField] private float _moveSpeed = 1.0f;
+    [SerializeField] private float _rotationSpeed = 1.0f;
+    [SerializeField] private float _rotationSpeedZ = 1.0f;
+    [SerializeField] private float _duration = 4.0f;
 
-    void Start()
+    private void Start()
     {
-        StartCoroutine(AnimateCard());
+        if (_duration <= 0)
+        {
+            Debug.LogWarning("Duration must be greater than 0. Animation will not start.");
+        }
+        else
+        {
+            StartCoroutine(AnimateCard());
+        }
     }
 
     private IEnumerator AnimateCard()
     {
-        if (_duration == 0)
-        {
-            Debug.LogWarning("Duration is set to 0. Animation will be skipped to avoid crashing.");
-            yield break;
-        }
+        float segmentDuration = _duration / 4;
 
         while (true)
         {
-            float time = 0;
-            float segmentDuration = _duration / 4;
-
             // Move up and rotate left
-            while (time < segmentDuration)
-            {
-                time += Time.deltaTime;
-                transform.position += Vector3.up * _moveSpeed * Time.deltaTime;
-                transform.Rotate(Vector3.up, -_rotationSpeed * Time.deltaTime);
-                transform.Rotate(Vector3.forward, _rotationSpeedZ * Time.deltaTime); // Rotate left
-                yield return null;
-            }
-
-            time = 0;
+            yield return AnimateSegment(Vector3.up, -_rotationSpeed, _rotationSpeedZ, segmentDuration);
 
             // Move down and reset rotation
-            while (time < segmentDuration)
-            {
-                time += Time.deltaTime;
-                transform.position -= Vector3.up * _moveSpeed * Time.deltaTime;
-                transform.Rotate(Vector3.up, _rotationSpeed * Time.deltaTime);
-                transform.Rotate(Vector3.forward, -_rotationSpeedZ * Time.deltaTime); // Rotate right
-                yield return null;
-            }
-
-            time = 0;
+            yield return AnimateSegment(Vector3.down, _rotationSpeed, -_rotationSpeedZ, segmentDuration);
 
             // Move up and rotate right
-            while (time < segmentDuration)
-            {
-                time += Time.deltaTime;
-                transform.position += Vector3.up * _moveSpeed * Time.deltaTime;
-                transform.Rotate(Vector3.up, _rotationSpeed * Time.deltaTime);
-                transform.Rotate(Vector3.forward, -_rotationSpeedZ * Time.deltaTime); // Rotate left
-                yield return null;
-            }
-
-            time = 0;
+            yield return AnimateSegment(Vector3.up, _rotationSpeed, -_rotationSpeedZ, segmentDuration);
 
             // Move down and reset rotation
-            while (time < segmentDuration)
-            {
-                time += Time.deltaTime;
-                transform.position -= Vector3.up * _moveSpeed * Time.deltaTime;
-                transform.Rotate(Vector3.up, -_rotationSpeed * Time.deltaTime);
-                transform.Rotate(Vector3.forward, _rotationSpeedZ * Time.deltaTime); // Rotate right
-                yield return null;
-            }
+            yield return AnimateSegment(Vector3.down, -_rotationSpeed, _rotationSpeedZ, segmentDuration);
+        }
+    }
+
+    private IEnumerator AnimateSegment(Vector3 direction, float rotationY, float rotationZ, float segmentDuration)
+    {
+        float time = 0;
+
+        while (time < segmentDuration)
+        {
+            time += Time.deltaTime;
+            transform.position += direction * _moveSpeed * Time.deltaTime;
+            transform.Rotate(Vector3.up, rotationY * Time.deltaTime);
+            transform.Rotate(Vector3.forward, rotationZ * Time.deltaTime);
+            yield return null;
         }
     }
 }

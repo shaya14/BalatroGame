@@ -6,9 +6,12 @@ public class MouseInputs : MonoBehaviour
 {
     void Update()
     {
-        if (Input.GetMouseButtonDown(1))
+        if(!ListsManager.Instance.IsPlayingHand)
         {
-            ListsManager.Instance.ClearSelectedCardList();
+            if (Input.GetMouseButtonDown(1))
+            {
+                ListsManager.Instance.ClearSelectedCardList();
+            }
         }
     }
 }

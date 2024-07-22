@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Deck : MonoBehaviour
@@ -23,6 +22,7 @@ public class Deck : MonoBehaviour
             Destroy(this);
         }
     }
+
     private void Start()
     {
         CreateDeck();
@@ -30,10 +30,10 @@ public class Deck : MonoBehaviour
         AddToHand();
     }
 
-    public void CreateDeck()
+    private void CreateDeck()
     {
-        string[] suits = new string[] { "Hearts", "Diamonds", "Clubs", "Spades" };
-        string[] ranks = new string[] { "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A" };
+        string[] suits = { "Hearts", "Diamonds", "Clubs", "Spades" };
+        string[] ranks = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A" };
 
         foreach (string suit in suits)
         {
@@ -41,14 +41,13 @@ public class Deck : MonoBehaviour
             {
                 Card newCard = Instantiate(_cardPrefab, transform);
                 newCard.InitCard(suit, rank);
-                newCard.name = rank + " of " + suit;
-                //newCard.gameObject.SetActive(false);
+                newCard.name = $"{rank} of {suit}";
                 _deck.Add(newCard);
             }
         }
     }
 
-    public void ShuffleDeck()
+    private void ShuffleDeck()
     {
         int n = _deck.Count;
         while (n > 1)
@@ -63,32 +62,19 @@ public class Deck : MonoBehaviour
 
     public void AddToHand()
     {
-        StartCoroutine(AddToHandCoroutine());
+        StartCoroutine(AddToHandCoroutine(_handHolder.CardToSpawn));
     }
 
-    public void AddToHand(int numOfCardToAdd)
+    public void AddToHand(int numOfCardsToAdd)
     {
-        StartCoroutine(AddToHandCoroutine(numOfCardToAdd));
+        StartCoroutine(AddToHandCoroutine(numOfCardsToAdd));
     }
 
-    private IEnumerator AddToHandCoroutine()
+    private IEnumerator AddToHandCoroutine(int numOfCardsToAdd)
     {
-        for (int i = 0; i < _handHolder.CardToSpawn; i++)
-        {
-            Card card = _deck[0];
-            _deck.RemoveAt(0);
-            ListsManager.Instance.AddToHand(card);
-            yield return new WaitForSeconds(0.2f);
-        }
-    }
+        numOfCardsToAdd = Mathf.Min(numOfCardsToAdd, _deck.Count);
 
-    private IEnumerator AddToHandCoroutine(int numOfCardToAdd)
-    {
-        if(_deck.Count < numOfCardToAdd)
-        {
-            numOfCardToAdd = _deck.Count;
-        }
-        for (int i = 0; i < numOfCardToAdd; i++)
+        for (int i = 0; i < numOfCardsToAdd; i++)
         {
             yield return new WaitForSeconds(0.2f);
             Card card = _deck[0];
