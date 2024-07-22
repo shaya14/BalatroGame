@@ -15,6 +15,8 @@ public class ListsManager : MonoBehaviour
     [SerializeField] private HandHolder _playedCards;
     [SerializeField] private DisableCanvas _disableCanvas;
     private bool _isPlayingHand = false;
+    private bool _isScoringHand = false;
+    private bool _isCoroutineRunning = false; // Flag to track if the coroutine is running
     private float _originalYPositon = 145.74f;
     private float _playedCardOriginalYPosition = 125.74f;
 
@@ -55,9 +57,9 @@ public class ListsManager : MonoBehaviour
             }
         }
 
-        if (_scoredCards.Count > 0)
+        if (_scoredCards.Count > 0 && !_isCoroutineRunning)
         {
-
+            _isScoringHand = true;
             StartCoroutine(DelayedScoredCards(_scoredCards, 1));
         }
     }
@@ -165,17 +167,18 @@ public class ListsManager : MonoBehaviour
 
     private IEnumerator PlayedHandCoroutine()
     {
+        Debug.Log("Starting PlayedHand coroutine");
         foreach (Card card in _selectedCards)
         {
             card.transform.SetParent(_playedCards.transform);
             _disableCanvas.DisableCanvasGroup();
             yield return new WaitForSeconds(0.2f);
         }
-        StartCoroutine(DelayedDiscardHand(3));
     }
 
     private IEnumerator DelayedDiscardHand(int seconds)
     {
+        Debug.Log("DelayedDiscardHand coroutine started");
         yield return new WaitForSeconds(seconds);
         DiscardHand();
         yield return new WaitForSeconds(1);
@@ -186,12 +189,40 @@ public class ListsManager : MonoBehaviour
 
     private IEnumerator DelayedScoredCards(List<Card> scoreCards, int seconds)
     {
+        _isCoroutineRunning = true; // Set the flag to true
+        Debug.Log("DelayedScoredCards coroutine started");
+
         yield return new WaitForSeconds(seconds);
+
         foreach (Card card in scoreCards)
         {
             RectTransform rectTransform = card.GetComponent<RectTransform>();
             rectTransform.localPosition = new Vector3(rectTransform.localPosition.x, _playedCardOriginalYPosition + 40, rectTransform.localPosition.z);
+            //Debug.Log("Card position updated: " + card.name);
             yield return new WaitForSeconds(0.2f);
         }
+
+        yield return new WaitForSeconds(1);
+
+        foreach (Card card in scoreCards)
+        {
+            card.SetTextEnabled(true);
+            //Debug.Log("Enabling text for card: " + card.name);
+            yield return new WaitForSeconds(0.2f);
+        }
+
+        yield return new WaitForSeconds(2);
+
+        ClearScoredCards();
+        StartCoroutine(DelayedDiscardHand(3));
+
+        yield return new WaitForSeconds(1);
+
+        _isScoringHand = false;
+        _isCoroutineRunning = false;
+        _isPlayingHand = false;
+        Debug.Log("DelayedScoredCards coroutine ended");
     }
+
+
 }

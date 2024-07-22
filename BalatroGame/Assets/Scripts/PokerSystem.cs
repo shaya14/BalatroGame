@@ -313,7 +313,6 @@ public class PokerSystem : MonoBehaviour
         if (highestCard != null)
         {
             ListsManager.Instance.UpdateScoredCards(highestCard);
-            Debug.Log("Highest Card: " + highestCard.Rank);
         }
     }
 }
