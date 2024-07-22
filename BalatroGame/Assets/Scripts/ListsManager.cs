@@ -15,6 +15,8 @@ public class ListsManager : MonoBehaviour
     [SerializeField] private HandHolder _playedCards;
     [SerializeField] private DisableCanvas _disableCanvas;
     private bool _isPlayingHand = false;
+    private float _originalYPositon = 145.74f;
+    private float _playedCardOriginalYPosition = 125.74f;
 
     public bool IsPlayingHand => _isPlayingHand;
     public List<Card> SelectedCards => _selectedCards;
@@ -38,8 +40,15 @@ public class ListsManager : MonoBehaviour
         {
             foreach (Card card in _selectedCards)
             {
-                card.transform.localScale = new Vector3(1.1f, 1.1f, 1.1f);
+                RectTransform rectTransform = card.GetComponent<RectTransform>();
+               // rectTransform.localPosition = new Vector3(rectTransform.localPosition.x, _originalYPositon + 20, rectTransform.localPosition.z);
             }
+        }
+
+        if(_scoredCards.Count > 0)
+        {
+                
+                StartCoroutine(DelayedScoredCards(_scoredCards, 1));
         }
     }
 
@@ -161,5 +170,16 @@ public class ListsManager : MonoBehaviour
         _scoredCards.Clear();
         _isPlayingHand = false;
         _disableCanvas.EnableCanvasGroup();
+    }
+
+    private IEnumerator DelayedScoredCards(List<Card> scoreCards , int seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        foreach (Card card in scoreCards)
+        {
+            RectTransform rectTransform = card.GetComponent<RectTransform>();
+            rectTransform.localPosition = new Vector3(rectTransform.localPosition.x, _playedCardOriginalYPosition + 40, rectTransform.localPosition.z);
+            yield return new WaitForSeconds(0.2f);
+        }
     }
 }

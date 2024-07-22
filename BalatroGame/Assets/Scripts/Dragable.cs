@@ -14,11 +14,15 @@ IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     private bool _toggleClick = false;
     [SerializeField] private Card _thisCard;
     [SerializeField] private DisableCanvas _disableCanvas;
+    [SerializeField] private float _originalPositon = 145.74f;
+
+    private RectTransform _rectTransform;
 
     private void Awake()
     {
         _thisCard = GetComponent<Card>();
         _disableCanvas = GetComponentInParent<DisableCanvas>();
+        _rectTransform = GetComponent<RectTransform>();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -87,7 +91,7 @@ IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
         if (_toggleClick)
         {
             ListsManager.Instance.UpdateSelecedCard(_thisCard);
-            this.transform.localScale = new Vector3(1f, 1f, 1f);
+            _rectTransform.localPosition = new Vector3(_rectTransform.localPosition.x, _originalPositon, _rectTransform.localPosition.z);
             _toggleClick = false;
         }
         else if (ListsManager.Instance.SelectedCards.Count < 5 && !ListsManager.Instance.IsPlayingHand)
