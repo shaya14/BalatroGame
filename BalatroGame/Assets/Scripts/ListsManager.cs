@@ -41,14 +41,24 @@ public class ListsManager : MonoBehaviour
             foreach (Card card in _selectedCards)
             {
                 RectTransform rectTransform = card.GetComponent<RectTransform>();
-               // rectTransform.localPosition = new Vector3(rectTransform.localPosition.x, _originalYPositon + 20, rectTransform.localPosition.z);
+                if (!_scoredCards.Contains(card))
+                {
+                    if (_isPlayingHand)
+                    {
+                        rectTransform.localPosition = new Vector3(rectTransform.localPosition.x, _originalYPositon, rectTransform.localPosition.z);
+                    }
+                    else
+                    {
+                        rectTransform.localPosition = new Vector3(rectTransform.localPosition.x, _originalYPositon + 20, rectTransform.localPosition.z);
+                    }
+                }
             }
         }
 
-        if(_scoredCards.Count > 0)
+        if (_scoredCards.Count > 0)
         {
-                
-                StartCoroutine(DelayedScoredCards(_scoredCards, 1));
+
+            StartCoroutine(DelayedScoredCards(_scoredCards, 1));
         }
     }
 
@@ -81,7 +91,9 @@ public class ListsManager : MonoBehaviour
     {
         foreach (Card card in _selectedCards)
         {
-            card.transform.localScale = new Vector3(1f, 1f, 1f);
+            card.GetComponent<RectTransform>().localPosition =
+            new Vector3(card.GetComponent<RectTransform>().localPosition.x,
+            _originalYPositon, card.GetComponent<RectTransform>().localPosition.z);
         }
         _selectedCards.Clear();
     }
@@ -172,7 +184,7 @@ public class ListsManager : MonoBehaviour
         _disableCanvas.EnableCanvasGroup();
     }
 
-    private IEnumerator DelayedScoredCards(List<Card> scoreCards , int seconds)
+    private IEnumerator DelayedScoredCards(List<Card> scoreCards, int seconds)
     {
         yield return new WaitForSeconds(seconds);
         foreach (Card card in scoreCards)
