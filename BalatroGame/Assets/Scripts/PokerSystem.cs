@@ -98,11 +98,17 @@ public class PokerSystem : MonoBehaviour
     private bool IsStraight(List<Card> handToCheck)
     {
         var ranks = handToCheck.Select(card => GetRankValue(card.Rank)).Distinct().OrderBy(rank => rank).ToList();
-        return ranks.Count >= 5 && (CheckSequentialRanks(ranks) || CheckAceLowStraight(ranks, handToCheck));
+        bool isStraight = ranks.Count >= 5 && (CheckSequentialRanks(ranks) || CheckAceLowStraight(ranks, handToCheck));
+        CheckGroupCount(handToCheck, 1, 5);
+        return isStraight;
     }
 
-    private bool IsFlush(List<Card> handToCheck) => 
-        handToCheck.Count >= 5 && handToCheck.All(card => card.Suit == handToCheck[0].Suit);
+    private bool IsFlush(List<Card> handToCheck)
+    {
+        bool isFlush = handToCheck.Count >= 5 && handToCheck.All(card => card.Suit == handToCheck[0].Suit);
+        CheckGroupCount(handToCheck, 1, 5);
+        return isFlush;
+    }
 
     private bool IsFullHouse(List<Card> handToCheck) => 
         CheckGroupCount(handToCheck, 3, 1) && CheckGroupCount(handToCheck, 2, 1);

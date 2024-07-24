@@ -304,8 +304,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e4fdbdee5017614fb3c3126fca6792a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cardPrefab: {fileID: 3633112176168002668, guid: d3cc598ef07f1f3488890fbc3730c22b, type: 3}
-  _handHolder: {fileID: 2015324324}
+  _cardPrefab: {fileID: 0}
+  _handHolder: {fileID: 0}
 --- !u!4 &282570801
 Transform:
   m_ObjectHideFlags: 0
@@ -756,7 +756,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e82ba80395fcd14478173c0c934b10e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scoredCards: []
   _handHolder: {fileID: 2015324324}
   _playedCards: {fileID: 586069147}
   _disableCanvas: {fileID: 586069143}
@@ -1185,7 +1184,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6ce6938d4846184e98dd9aa8f1ad098, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _handType: 0
 --- !u!4 &1509152005
 Transform:
   m_ObjectHideFlags: 0
