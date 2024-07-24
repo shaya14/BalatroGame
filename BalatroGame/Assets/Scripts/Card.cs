@@ -65,7 +65,7 @@ public class Card : MonoBehaviour
 
     private IEnumerator FadeOutText()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.1f);
         float elapsedTime = 0f;
         Color startColor = _pointsText.color;
 

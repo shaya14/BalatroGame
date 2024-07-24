@@ -17,6 +17,7 @@ public class ListsManager : MonoBehaviour
     [SerializeField] private HandHolder _handHolder;
     [SerializeField] private HandHolder _playedCards;
     [SerializeField] private DisableCanvas _disableCanvas;
+    [SerializeField] private float _timeToDiscard;
 
     // Flags
     private bool _isPlayingHand = false;
@@ -213,7 +214,7 @@ public class ListsManager : MonoBehaviour
         }
     }
 
-    private IEnumerator DelayedDiscardHand(int seconds)
+    private IEnumerator DelayedDiscardHand(float seconds)
     {
         Debug.Log("DelayedDiscardHand coroutine started");
         List<Card> cardsToDiscard = new List<Card>(_selectedCards);
@@ -246,7 +247,7 @@ public class ListsManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(2);
-        StartCoroutine(DelayedDiscardHand(3));
+        StartCoroutine(DelayedDiscardHand(_timeToDiscard));
         ClearSelectedCardList();
         ClearScoredCards();
 

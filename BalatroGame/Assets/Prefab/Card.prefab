@@ -278,7 +278,7 @@ MonoBehaviour:
   _sprite: {fileID: 0}
   _suit: 
   _rank: 
-  _fadeDuration: 2
+  _fadeDuration: 0.6
 --- !u!114 &1252113402447254779
 MonoBehaviour:
   m_ObjectHideFlags: 0
