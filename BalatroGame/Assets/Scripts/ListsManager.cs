@@ -205,7 +205,7 @@ public class ListsManager : MonoBehaviour
 
     private IEnumerator PlayedHandCoroutine()
     {
-        Debug.Log("Starting PlayedHand coroutine");
+        //Debug.Log("Starting PlayedHand coroutine");
         foreach (Card card in _selectedCards)
         {
             card.transform.SetParent(_playedCards.transform);
@@ -216,7 +216,7 @@ public class ListsManager : MonoBehaviour
 
     private IEnumerator DelayedDiscardHand(float seconds)
     {
-        Debug.Log("DelayedDiscardHand coroutine started");
+        //Debug.Log("DelayedDiscardHand coroutine started");
         List<Card> cardsToDiscard = new List<Card>(_selectedCards);
         yield return new WaitForSeconds(seconds);
         DiscardHand(cardsToDiscard);
@@ -227,7 +227,7 @@ public class ListsManager : MonoBehaviour
     private IEnumerator DelayedScoredCards(List<Card> scoreCards, int seconds)
     {
         _isCoroutineRunning = true;
-        Debug.Log("DelayedScoredCards coroutine started");
+        //Debug.Log("DelayedScoredCards coroutine started");
 
         yield return new WaitForSeconds(seconds);
 
@@ -243,10 +243,12 @@ public class ListsManager : MonoBehaviour
         foreach (Card card in scoreCards)
         {
             card.SetTextEnabled(true);
+            PointsHandler.Instance.AddPoints(card.PointsValue);
             yield return new WaitForSeconds(0.2f);
         }
 
         yield return new WaitForSeconds(2);
+        PointsHandler.Instance.CalculateTotalPoints();
         StartCoroutine(DelayedDiscardHand(_timeToDiscard));
         ClearSelectedCardList();
         ClearScoredCards();
@@ -255,6 +257,6 @@ public class ListsManager : MonoBehaviour
 
         _isCoroutineRunning = false;
         _isPlayingHand = false;
-        Debug.Log("DelayedScoredCards coroutine ended");
+        //Debug.Log("DelayedScoredCards coroutine ended");
     }
 }

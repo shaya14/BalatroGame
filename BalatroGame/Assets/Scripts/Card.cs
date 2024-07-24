@@ -19,6 +19,7 @@ public class Card : MonoBehaviour
     // Properties
     public string Suit => _suit;
     public string Rank => _rank;
+    public int PointsValue => _pointsValue;
 
     private void Awake()
     {

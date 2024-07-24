@@ -23,6 +23,10 @@ public class PokerSystem : MonoBehaviour
     private static PokerSystem _instance;
     public static PokerSystem Instance => _instance;
 
+    private int _basePoints;
+    private float _baseMult;
+    private bool _isScoring = false;
+
     // Hand type
     public HandType _handType { get; private set; }
 
@@ -38,28 +42,67 @@ public class PokerSystem : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        // if (ListsManager.Instance.SelectedCards.Count >= 1)
+        // {
+        //     DefinePokerHand(ListsManager.Instance.SelectedCards);
+        // }
+    }
+
+
     public void DefinePokerHand(List<Card> handToCheck)
     {
-        if (IsRoyalFlush(handToCheck)) SetHandType(HandType.RoyalFlush, "Royal Flush");
-        else if (IsStraightFlush(handToCheck)) SetHandType(HandType.StraightFlush, "Straight Flush");
-        else if (IsFourOfAKind(handToCheck)) SetHandType(HandType.FourOfAKind, "Four of a Kind");
-        else if (IsFullHouse(handToCheck)) SetHandType(HandType.FullHouse, "Full House");
-        else if (IsFlush(handToCheck)) SetHandType(HandType.Flush, "Flush");
-        else if (IsStraight(handToCheck)) SetHandType(HandType.Straight, "Straight");
-        else if (IsThreeOfAKind(handToCheck)) SetHandType(HandType.ThreeOfAKind, "Three of a Kind");
-        else if (IsTwoPair(handToCheck)) SetHandType(HandType.TwoPair, "Two Pair");
-        else if (IsPair(handToCheck)) SetHandType(HandType.Pair, "Pair");
+        if (IsRoyalFlush(handToCheck))
+        {
+            SetHandType(HandType.RoyalFlush, 100, 8, "Royal Flush");
+        }
+        else if (IsStraightFlush(handToCheck))
+        {
+            SetHandType(HandType.StraightFlush, 100, 8, "Straight Flush");
+        }
+        else if (IsFourOfAKind(handToCheck))
+        {
+            SetHandType(HandType.FourOfAKind, 60, 7, "Four of a Kind");
+        }
+        else if (IsFullHouse(handToCheck))
+        {
+            SetHandType(HandType.FullHouse, 40, 4, "Full House");
+        }
+        else if (IsFlush(handToCheck))
+        {
+            SetHandType(HandType.Flush, 35, 4, "Flush");
+        }
+        else if (IsStraight(handToCheck))
+        {
+            SetHandType(HandType.Straight, 30, 4, "Straight");
+        }
+        else if (IsThreeOfAKind(handToCheck))
+        {
+            SetHandType(HandType.ThreeOfAKind, 30, 3, "Three of a Kind");
+        }
+        else if (IsTwoPair(handToCheck))
+        {
+            SetHandType(HandType.TwoPair, 20, 2, "Two Pair");
+        }
+        else if (IsPair(handToCheck))
+        {
+            SetHandType(HandType.Pair, 10, 2, "Pair");
+        }
         else
         {
-            SetHandType(HandType.HighCard, "High Card");
+            SetHandType(HandType.HighCard, 5, 1, "High Card");
             FindHighestCard(handToCheck);
         }
     }
 
-    private void SetHandType(HandType handType, string debugMessage)
+    private void SetHandType(HandType handType, int basePoints, float baseMult, string debugMessage)
     {
         _handType = handType;
-        Debug.Log(debugMessage);
+        _basePoints = basePoints;
+        _baseMult = baseMult;
+        PointsHandler.Instance.SetBasePointsAndMults(_basePoints, _baseMult);
+        Debug.Log($"Hand Type: {debugMessage} Points: {_basePoints} Multiplier: {_baseMult}");
     }
 
     private int GetRankValue(string rank, bool aceAsOne = false)
@@ -83,16 +126,16 @@ public class PokerSystem : MonoBehaviour
         };
     }
 
-    private bool IsRoyalFlush(List<Card> handToCheck) => 
+    private bool IsRoyalFlush(List<Card> handToCheck) =>
         IsFlush(handToCheck) && handToCheck.All(card => new HashSet<string> { "10", "J", "Q", "K", "A" }.Contains(card.Rank));
 
-    private bool IsPair(List<Card> handToCheck) => 
+    private bool IsPair(List<Card> handToCheck) =>
         CheckGroupCount(handToCheck, 2, 1);
 
-    private bool IsTwoPair(List<Card> handToCheck) => 
+    private bool IsTwoPair(List<Card> handToCheck) =>
         CheckGroupCount(handToCheck, 2, 2);
 
-    private bool IsThreeOfAKind(List<Card> handToCheck) => 
+    private bool IsThreeOfAKind(List<Card> handToCheck) =>
         CheckGroupCount(handToCheck, 3, 1);
 
     private bool IsStraight(List<Card> handToCheck)
@@ -110,13 +153,30 @@ public class PokerSystem : MonoBehaviour
         return isFlush;
     }
 
-    private bool IsFullHouse(List<Card> handToCheck) => 
-        CheckGroupCount(handToCheck, 3, 1) && CheckGroupCount(handToCheck, 2, 1);
+    private bool IsFullHouse(List<Card> handToCheck)
+    {
+        var groups = handToCheck.GroupBy(card => card.Rank).ToList();
+        if (groups.Count(g => g.Count() == 3) == 1 && groups.Count(g => g.Count() == 2) >= 1)
+        {
+            ListsManager.Instance.ClearScoredCards();
+            foreach (var card in groups.Where(g => g.Count() == 3).SelectMany(g => g))
+            {
+                ListsManager.Instance.UpdateScoredCards(card);
+            }
+            foreach (var card in groups.Where(g => g.Count() == 2).SelectMany(g => g).Take(2))
+            {
+                ListsManager.Instance.UpdateScoredCards(card);
+            }
+            return true;
+        }
+        return false;
+    }
 
-    private bool IsFourOfAKind(List<Card> handToCheck) => 
+
+    private bool IsFourOfAKind(List<Card> handToCheck) =>
         CheckGroupCount(handToCheck, 4, 1);
 
-    private bool IsStraightFlush(List<Card> handToCheck) => 
+    private bool IsStraightFlush(List<Card> handToCheck) =>
         IsFlush(handToCheck) && IsStraight(handToCheck);
 
     private bool CheckGroupCount(List<Card> handToCheck, int count, int expectedGroups)
