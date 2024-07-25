@@ -21,11 +21,19 @@ public class PlayerActions : MonoBehaviour
 
     public void PlayHand()
     {
+        if (GameHandler.Instance.RemainingHands <= 0)
+            return;
+
         ListsManager.Instance.PlayedHand();
+        GameHandler.Instance.UpdateReminingHands();
     }
 
     public void DiscardHand()
     {
+        if (GameHandler.Instance.RemainingDiscards <= 0)
+            return;
+
         ListsManager.Instance.DiscardHand();
+        GameHandler.Instance.UpdateReminingDiscards();
     }
 }
