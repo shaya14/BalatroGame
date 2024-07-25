@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum HandType
 {
@@ -22,10 +24,10 @@ public class PokerSystem : MonoBehaviour
     // Singleton instance
     private static PokerSystem _instance;
     public static PokerSystem Instance => _instance;
+    [SerializeField] private TextMeshProUGUI _pokerHandText;
 
     private int _basePoints;
     private float _baseMult;
-    private bool _isScoring = false;
 
     // Hand type
     public HandType _handType { get; private set; }
@@ -102,7 +104,13 @@ public class PokerSystem : MonoBehaviour
         _basePoints = basePoints;
         _baseMult = baseMult;
         PointsHandler.Instance.SetBasePointsAndMults(_basePoints, _baseMult);
+        _pokerHandText.text = $"{debugMessage}";
         Debug.Log($"Hand Type: {debugMessage} Points: {_basePoints} Multiplier: {_baseMult}");
+    }
+
+    public void SetTextToEmpty()
+    {
+        _pokerHandText.text = "";
     }
 
     private int GetRankValue(string rank, bool aceAsOne = false)
@@ -226,10 +234,17 @@ public class PokerSystem : MonoBehaviour
 
     public void FindHighestCard(List<Card> handToCheck)
     {
+        // Clear the scored cards list
+        ListsManager.Instance.ClearScoredCards();
+
+        // Find the highest card
         var highestCard = handToCheck.OrderByDescending(card => GetRankValue(card.Rank)).FirstOrDefault();
+
+        // Update the scored cards with the highest card
         if (highestCard != null)
         {
             ListsManager.Instance.UpdateScoredCards(highestCard);
         }
     }
+
 }

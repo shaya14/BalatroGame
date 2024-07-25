@@ -14,7 +14,6 @@ public class PointsHandler : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _pointsText;
     [SerializeField] private TextMeshProUGUI _totalPointsText;
     [SerializeField] private TextMeshProUGUI _multText;
-    [SerializeField] private float _fadeDuration = 2.0f;
 
     // Private fields
     private int _points;
@@ -42,54 +41,67 @@ public class PointsHandler : MonoBehaviour
         _points = 0;
         _totalPoints = 0;
         _mult = 1;
-        _pointsText.text = $"+{_points}";
+        _pointsText.text = $"{_points}";
         _totalPointsText.text = $"Total: {_totalPoints}";
-        _multText.text = $"x{_mult}";
+        _multText.text = $"{_mult}";
     }
     public void SetBasePointsAndMults(int points, float mult)
     {
         _points = points;
         _mult = mult;
-        _pointsText.text = $"+{_points}";
-        _multText.text = $"x{_mult}";
+        _pointsText.text = $"{_points}";
+        _multText.text = $"{_mult}";
     }
 
     public void AddPoints(int points)
     {
         _points += points;
-        _pointsText.text = $"+{_points}";
-        //StartCoroutine(FadeText(_pointsText));
+        _pointsText.text = $"{_points}";
     }
 
     public void AddMult(float mult)
     {
         _mult = mult;
-        _multText.text = $"x{_mult}";
-        //StartCoroutine(FadeText(_multText));
+        _multText.text = $"{_mult}";
     }
 
     public void AddTotalPoints(int points)
     {
-        _totalPoints += points;
-        _totalPointsText.text = $"Total: {_totalPoints}";
-        //StartCoroutine(FadeText(_totalPointsText));
+        StartCoroutine(LerpPointsToTotalPoints(points));
     }
 
     public void CalculateTotalPoints()
     {
         int total = _points * (int)_mult;
         AddTotalPoints(total);
-        _points = 0;
-        _pointsText.text = $"+{_points}";
+        //_points = 0;
+        //_pointsText.text = $"{_points}";
         _mult = 1;
-        _multText.text = $"x{_mult}";
+        _multText.text = $"{_mult}";
+        PokerSystem.Instance.SetTextToEmpty();
     }
 
-    // private IEnumerator FadeText(TextMeshProUGUI text)
-    // {
-    //     text.CrossFadeAlpha(0, 0, true);
-    //     text.CrossFadeAlpha(1, _fadeDuration, true);
-    //     yield return new WaitForSeconds(_fadeDuration);
-    //     text.CrossFadeAlpha(0, _fadeDuration, true);
-    // }
+    private IEnumerator LerpPointsToTotalPoints(int points)
+    {
+        float time = 0;
+        float duration = 1;
+
+        // Total points
+        int startPoints = _totalPoints;
+        int endPoints = _totalPoints + points;
+        
+        // Points to add
+        int startAddPoints = _points;
+        int endAddPoints = 0;
+        
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            _totalPoints = (int)Mathf.Lerp(startPoints, endPoints, time / duration);
+            _points = (int)Mathf.Lerp(startAddPoints, endAddPoints, time / duration);
+            _totalPointsText.text = $"Total: {_totalPoints}";
+            _pointsText.text = $"{_points}";
+            yield return null;
+        }
+    }
 }
