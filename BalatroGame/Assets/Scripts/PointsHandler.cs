@@ -74,8 +74,6 @@ public class PointsHandler : MonoBehaviour
     {
         int total = _points * (int)_mult;
         AddTotalPoints(total);
-        //_points = 0;
-        //_pointsText.text = $"{_points}";
         _mult = 1;
         _multText.text = $"{_mult}";
         PokerSystem.Instance.SetTextToEmpty();
@@ -93,7 +91,7 @@ public class PointsHandler : MonoBehaviour
         // Points to add
         int startAddPoints = _points;
         int endAddPoints = 0;
-        
+
         while (time < duration)
         {
             time += Time.deltaTime;
