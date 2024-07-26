@@ -16,6 +16,7 @@ public class GameHandler : MonoBehaviour
     [SerializeField] private int _pointsToWin;
     private int _originalRemianingHands;
     private int _originalRemianingDiscards;
+    private bool _isCoroutineRunning = false;
 
     // Serialized Text fields
     [SerializeField] private TextMeshProUGUI _remainingHandsText;
@@ -57,14 +58,25 @@ public class GameHandler : MonoBehaviour
             Time.timeScale = 0;
             GameManager.Instance.GameOver();
         }
-        else if (_pointsToWin <= PointsHandler.Instance.TotalPoints && !ListsManager.Instance.IsPlayingHand)
+        else if (_pointsToWin <= PointsHandler.Instance.TotalPoints && !ListsManager.Instance.IsPlayingHand && !_isCoroutineRunning)
         {
-            GameManager.Instance.SetRoundPanelActive(true);
-            RoundsManager.Instance.SetRoundCompleted(RoundsManager.Instance.CurrentRoundIndex);
-            RoundsManager.Instance.ResetHandsAndPoints();
-            Deck.Instance.CleanLastDeck();
-            ListsManager.Instance.CleanHand();
+            StartCoroutine(WinRoundCourotine());
         }
+    }
+
+    private IEnumerator WinRoundCourotine()
+    {
+        _isCoroutineRunning = true;
+
+        yield return new WaitForSeconds(2);
+
+        GameManager.Instance.SetRoundPanelActive(true);
+        RoundsManager.Instance.SetRoundCompleted(RoundsManager.Instance.CurrentRoundIndex);
+        RoundsManager.Instance.ResetHandsAndPoints();
+        Deck.Instance.CleanLastDeck();
+        ListsManager.Instance.CleanHand();
+
+        _isCoroutineRunning = false;
     }
 
     public void ResetHandsAndDiscards()
