@@ -23,13 +23,6 @@ public class Deck : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        CreateDeck();
-        ShuffleDeck();
-        AddToHand();
-    }
-
     private void CreateDeck()
     {
         string[] suits = { "Hearts", "Diamonds", "Clubs", "Spades" };
@@ -58,6 +51,27 @@ public class Deck : MonoBehaviour
             _deck[k] = _deck[n];
             _deck[n] = temp;
         }
+    }
+
+    public void NewRoundDeck()
+    {
+        ResetNewDeck();
+        AddToHand();
+    }
+
+    public void CleanLastDeck()
+    {
+        foreach (Card card in _deck)
+        {
+            Destroy(card.gameObject);
+        }
+        _deck.Clear();
+    }
+
+    public void ResetNewDeck()
+    {
+        CreateDeck();
+        ShuffleDeck();
     }
 
     public void AddToHand()

@@ -29,6 +29,7 @@ public class ListsManager : MonoBehaviour
 
     // Properties
     public bool IsPlayingHand => _isPlayingHand;
+    public bool IsCoroutineRunning => _isCoroutineRunning;
     public List<Card> SelectedCards => _selectedCards;
     public List<Card> Hand => _hand;
     public static ListsManager Instance => _instance;
@@ -84,6 +85,15 @@ public class ListsManager : MonoBehaviour
     public void ClearScoredCards()
     {
         _scoredCards.Clear();
+    }
+
+    public void CleanHand()
+    {
+        foreach (Card card in _hand)
+        {
+            Destroy(card.gameObject);
+        }
+        _hand.Clear();
     }
 
     public void UpdateSelectedCard(Card card)

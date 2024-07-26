@@ -53,6 +53,12 @@ public class PointsHandler : MonoBehaviour
         _multText.text = $"{_mult}";
     }
 
+    public void ResetTotalPoints()
+    {
+        _totalPoints = 0;
+        _totalPointsText.text = $"Total: {_totalPoints}";
+    }
+
     public void AddPoints(int points)
     {
         _points += points;

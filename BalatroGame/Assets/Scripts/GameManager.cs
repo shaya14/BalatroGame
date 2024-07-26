@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -12,6 +13,7 @@ public class GameManager : MonoBehaviour
     // Serialized fields
     [SerializeField] private GameObject _gameOverPanel;
     [SerializeField] private GameObject _winScreen;
+    [SerializeField] private GameObject _roundPanel;
 
 
     private void Awake()
@@ -24,7 +26,7 @@ public class GameManager : MonoBehaviour
         {
             Destroy(this);
         }
-        Time.timeScale = 1;
+        Time.timeScale = 0;
     }
 
     public void MakeTimeFast(int num)
@@ -46,5 +48,26 @@ public class GameManager : MonoBehaviour
     {
         _gameOverPanel.gameObject.SetActive(false);
         UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+    }
+
+    public void SetRoundPanelActive(bool value)
+    {
+        _roundPanel.gameObject.SetActive(value);
+    }
+
+    private void SetPoints(Round round)
+    {
+        GameHandler.Instance.SetPointsToWin(round.RoundPoints);
+    }
+
+    public void StartRound(Round round)
+    {
+        if (!round.IsRoundAvailablel)
+            return;
+
+        SetPoints(round);
+        _roundPanel.gameObject.SetActive(false);
+        Deck.Instance.NewRoundDeck();
+        Time.timeScale = 1;
     }
 }
