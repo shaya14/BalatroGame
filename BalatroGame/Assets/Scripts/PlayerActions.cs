@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class PlayerActions : MonoBehaviour
 {
+    private Joker _currentJoker;
     private static PlayerActions _instance;
     public static PlayerActions Instance => _instance;
+
+
 
     private void Awake()
     {
@@ -35,5 +38,15 @@ public class PlayerActions : MonoBehaviour
 
         ListsManager.Instance.DiscardHand();
         GameHandler.Instance.UpdateReminingDiscards();
+    }
+
+    public void GetJoker(Joker joker)
+    {
+        _currentJoker = joker;
+    }
+
+    public void BuyItem()
+    {
+        _currentJoker.BuyJoker();
     }
 }

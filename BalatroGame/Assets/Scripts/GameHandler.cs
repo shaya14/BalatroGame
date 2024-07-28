@@ -17,16 +17,19 @@ public class GameHandler : MonoBehaviour
     private int _originalRemianingHands;
     private int _originalRemianingDiscards;
     private bool _isCoroutineRunning = false;
+    [SerializeField] private int _playerMoney = 0;
 
     // Serialized Text fields
     [SerializeField] private TextMeshProUGUI _remainingHandsText;
     [SerializeField] private TextMeshProUGUI _remainingDiscardsText;
     [SerializeField] private TextMeshProUGUI _pointsToWinText;
+    [SerializeField] private TextMeshProUGUI _moneyText;
 
     // Properties
     public int RemainingHands => _remianingHands;
     public int RemainingDiscards => _remianingDiscards;
     public int PointsToWin => _pointsToWin;
+    public int PlayerMoney => _playerMoney;
 
 
     private void Awake()
@@ -46,6 +49,7 @@ public class GameHandler : MonoBehaviour
         _remainingHandsText.text = $"Hands: {_remianingHands}";
         _remainingDiscardsText.text = $"Discards: {_remianingDiscards}";
         _pointsToWinText.text = $"Win: {_pointsToWin}";
+        _moneyText.text = $"Money: {_playerMoney}";
 
         _originalRemianingHands = _remianingHands;
         _originalRemianingDiscards = _remianingDiscards;
@@ -103,5 +107,11 @@ public class GameHandler : MonoBehaviour
     {
         _pointsToWin = points;
         _pointsToWinText.text = $"Win: {_pointsToWin}";
+    }
+
+    public void UpdatePlayerMoney(int money)
+    {
+        _playerMoney += money;
+        _moneyText.text = $"Money: {_playerMoney}";
     }
 }

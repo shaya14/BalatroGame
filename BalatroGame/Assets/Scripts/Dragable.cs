@@ -17,11 +17,14 @@ public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     private bool _toggleClick;
     private RectTransform _rectTransform;
 
+    private Transform _originalPositonForJoker;
+
     private void Awake()
     {
         _thisCard = GetComponent<Card>();
         _disableCanvas = GetComponentInParent<DisableCanvas>();
         _rectTransform = GetComponent<RectTransform>();
+        _originalPositonForJoker = GetComponent<Transform>();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -35,14 +38,19 @@ public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public void OnDrag(PointerEventData eventData)
     {
-        _disableCanvas.DisableCanvasGroup();
+        if (_disableCanvas != null)
+        {
+            _disableCanvas.DisableCanvasGroup();
+        }
         transform.position = eventData.position;
         UpdatePlaceholderPosition();
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        _disableCanvas.EnableCanvasGroup();
+        if (_disableCanvas != null)
+            _disableCanvas.EnableCanvasGroup();
+
         transform.SetParent(_parentToReturnTo);
         transform.SetSiblingIndex(_placeHolder.transform.GetSiblingIndex());
         GetComponent<CanvasGroup>().blocksRaycasts = true;
@@ -61,14 +69,39 @@ public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        Joker currentJoker = GetComponent<Joker>();
+        
+        if (currentJoker.IsBought)
+        {
+            return;
+        }
+
         if (_toggleClick)
         {
+            if (currentJoker && !currentJoker.IsBought)
+            {
+                _rectTransform.localPosition = new Vector3(_rectTransform.localPosition.x, _originalPositon, _rectTransform.localPosition.z);
+                PlayerActions.Instance.GetJoker(null);
+                GetComponent<Joker>().EnableBuyButton(false);
+                _toggleClick = false;
+                return;
+            }
+
             ListsManager.Instance.UpdateSelectedCard(_thisCard);
             _rectTransform.localPosition = new Vector3(_rectTransform.localPosition.x, _originalPositon, _rectTransform.localPosition.z);
             _toggleClick = false;
         }
         else if (ListsManager.Instance.SelectedCards.Count < 5 && !ListsManager.Instance.IsPlayingHand)
         {
+            if (currentJoker && !currentJoker.IsBought)
+            {
+                _rectTransform.localPosition = new Vector3(_rectTransform.localPosition.x, _originalPositon + 10, _rectTransform.localPosition.z);
+                PlayerActions.Instance.GetJoker(currentJoker);
+                GetComponent<Joker>().EnableBuyButton(true);
+                _toggleClick = true;
+                return;
+            }
+
             ListsManager.Instance.UpdateSelectedCard(_thisCard);
             _toggleClick = true;
         }

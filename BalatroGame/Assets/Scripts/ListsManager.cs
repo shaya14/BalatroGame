@@ -10,6 +10,7 @@ public class ListsManager : MonoBehaviour
 
     // Card lists
     private List<Card> _selectedCards = new List<Card>();
+    [SerializeField] private List<Joker> _ownedJokers = new List<Joker>();
     private List<Card> _hand = new List<Card>();
     private List<Card> _scoredCards = new List<Card>();
 
@@ -75,6 +76,11 @@ public class ListsManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void UpdateOwnedJokers(Joker joker)
+    {
+        _ownedJokers.Add(joker);
     }
 
     public void UpdateScoredCards(Card card)
