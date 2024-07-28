@@ -2282,9 +2282,10 @@ GameObject:
   m_Component:
   - component: {fileID: 999901954}
   - component: {fileID: 999901956}
+  - component: {fileID: 999901957}
   - component: {fileID: 999901955}
   m_Layer: 5
-  m_Name: Rounds Panel
+  m_Name: Rounds Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2351,6 +2352,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 999901953}
   m_CullTransparentMesh: 1
+--- !u!114 &999901957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 999901953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e1346ed634e3f44c821ee763415a39e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rounds: []
 --- !u!1001 &1034451462
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2360,8 +2374,48 @@ PrefabInstance:
     m_TransformParent: {fileID: 999901954}
     m_Modifications:
     - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+      propertyPath: _roundTitle
+      value: Round 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
       propertyPath: _roundPoints
       value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+      propertyPath: _roundLockedColor.a
+      value: 0.84313726
+      objectReference: {fileID: 0}
+    - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+      propertyPath: _roundLockedColor.b
+      value: 0.52156866
+      objectReference: {fileID: 0}
+    - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+      propertyPath: _roundLockedColor.g
+      value: 0.52156866
+      objectReference: {fileID: 0}
+    - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+      propertyPath: _roundLockedColor.r
+      value: 0.52156866
+      objectReference: {fileID: 0}
+    - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+      propertyPath: _roundCompletedColor.a
+      value: 0.78431374
+      objectReference: {fileID: 0}
+    - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+      propertyPath: _roundCompletedColor.b
+      value: 0.14901961
+      objectReference: {fileID: 0}
+    - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+      propertyPath: _roundCompletedColor.g
+      value: 0.48235294
+      objectReference: {fileID: 0}
+    - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+      propertyPath: _roundCompletedColor.r
+      value: 0.24705882
+      objectReference: {fileID: 0}
+    - target: {fileID: 855660440368432217, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6141620960328890235, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
       propertyPath: m_Name
@@ -3772,6 +3826,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1516967847}
   m_CullTransparentMesh: 1
+--- !u!114 &1530298719 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7781020762428231472, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+  m_PrefabInstance: {fileID: 2069561731}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1534501642
 GameObject:
   m_ObjectHideFlags: 0
@@ -4358,6 +4423,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1881940706}
   m_CullTransparentMesh: 1
+--- !u!114 &1901095704 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7781020762428231472, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+  m_PrefabInstance: {fileID: 6681390606150438471}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1934859771
 GameObject:
   m_ObjectHideFlags: 0
@@ -4444,8 +4520,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 077f71080bed2014886aeb7c6eecebf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _remianingHands: 6
-  _remianingDiscards: 5
+  _remianingHands: 4
+  _remianingDiscards: 2
   _pointsToWin: 300
   _remainingHandsText: {fileID: 1881940708}
   _remainingDiscardsText: {fileID: 16932163}
@@ -4860,8 +4936,56 @@ PrefabInstance:
     m_TransformParent: {fileID: 999901954}
     m_Modifications:
     - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+      propertyPath: _roundTitle
+      value: Round 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
       propertyPath: _roundPoints
-      value: 450
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+      propertyPath: _isRoundAvailable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+      propertyPath: _startRoundButton
+      value: 
+      objectReference: {fileID: 1530298719}
+    - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+      propertyPath: _roundLockedColor.a
+      value: 0.84313726
+      objectReference: {fileID: 0}
+    - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+      propertyPath: _roundLockedColor.b
+      value: 0.52156866
+      objectReference: {fileID: 0}
+    - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+      propertyPath: _roundLockedColor.g
+      value: 0.52156866
+      objectReference: {fileID: 0}
+    - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+      propertyPath: _roundLockedColor.r
+      value: 0.52156866
+      objectReference: {fileID: 0}
+    - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+      propertyPath: _roundCompletedColor.a
+      value: 0.78431374
+      objectReference: {fileID: 0}
+    - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+      propertyPath: _roundCompletedColor.b
+      value: 0.14827338
+      objectReference: {fileID: 0}
+    - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+      propertyPath: _roundCompletedColor.g
+      value: 0.4811321
+      objectReference: {fileID: 0}
+    - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+      propertyPath: _roundCompletedColor.r
+      value: 0.24519737
+      objectReference: {fileID: 0}
+    - target: {fileID: 855660440368432217, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6141620960328890235, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
       propertyPath: m_Name
@@ -5465,7 +5589,47 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
       propertyPath: _roundPoints
-      value: 300
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+      propertyPath: _isRoundAvailable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+      propertyPath: _startRoundButton
+      value: 
+      objectReference: {fileID: 1901095704}
+    - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+      propertyPath: _roundLockedColor.a
+      value: 0.84313726
+      objectReference: {fileID: 0}
+    - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+      propertyPath: _roundLockedColor.b
+      value: 0.52156866
+      objectReference: {fileID: 0}
+    - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+      propertyPath: _roundLockedColor.g
+      value: 0.52156866
+      objectReference: {fileID: 0}
+    - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+      propertyPath: _roundLockedColor.r
+      value: 0.52156866
+      objectReference: {fileID: 0}
+    - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+      propertyPath: _roundCompletedColor.a
+      value: 0.78431374
+      objectReference: {fileID: 0}
+    - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+      propertyPath: _roundCompletedColor.b
+      value: 0.14901961
+      objectReference: {fileID: 0}
+    - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+      propertyPath: _roundCompletedColor.g
+      value: 0.48235294
+      objectReference: {fileID: 0}
+    - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+      propertyPath: _roundCompletedColor.r
+      value: 0.24705882
       objectReference: {fileID: 0}
     - target: {fileID: 6141620960328890235, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
       propertyPath: m_Name
