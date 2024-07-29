@@ -42,7 +42,7 @@ public class Round : MonoBehaviour
 
         _roundTitleText.text = _roundTitle;
         _roundPointsText.text = _roundPoints.ToString();
-        _moneyRewardText.text = "+ " + _moneyReward.ToString();
+        _moneyRewardText.text = "+$" + _moneyReward.ToString();
     }
 
     private void Update()

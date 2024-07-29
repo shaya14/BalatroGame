@@ -875,7 +875,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &316340339
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2785,7 +2785,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
       propertyPath: _roundPoints
-      value: 10
+      value: 600
       objectReference: {fileID: 0}
     - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
       propertyPath: _isRoundAvailable
@@ -3841,7 +3841,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9208903271370865811, guid: 7f480c2c5f0275949aa76bd93d759520, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9208903271370865811, guid: 7f480c2c5f0275949aa76bd93d759520, type: 3}
       propertyPath: m_AnchorMin.x
@@ -3849,7 +3849,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9208903271370865811, guid: 7f480c2c5f0275949aa76bd93d759520, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9208903271370865811, guid: 7f480c2c5f0275949aa76bd93d759520, type: 3}
       propertyPath: m_SizeDelta.x
@@ -3889,11 +3889,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9208903271370865811, guid: 7f480c2c5f0275949aa76bd93d759520, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 874.99994
       objectReference: {fileID: 0}
     - target: {fileID: 9208903271370865811, guid: 7f480c2c5f0275949aa76bd93d759520, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -145.74
       objectReference: {fileID: 0}
     - target: {fileID: 9208903271370865811, guid: 7f480c2c5f0275949aa76bd93d759520, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -5925,7 +5925,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
       propertyPath: _roundPoints
-      value: 10
+      value: 450
       objectReference: {fileID: 0}
     - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
       propertyPath: _isRoundAvailable
@@ -6761,7 +6761,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9208903271370865811, guid: 7f480c2c5f0275949aa76bd93d759520, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9208903271370865811, guid: 7f480c2c5f0275949aa76bd93d759520, type: 3}
       propertyPath: m_AnchorMin.x
@@ -6769,7 +6769,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9208903271370865811, guid: 7f480c2c5f0275949aa76bd93d759520, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9208903271370865811, guid: 7f480c2c5f0275949aa76bd93d759520, type: 3}
       propertyPath: m_SizeDelta.x
@@ -6809,11 +6809,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9208903271370865811, guid: 7f480c2c5f0275949aa76bd93d759520, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 724.99994
       objectReference: {fileID: 0}
     - target: {fileID: 9208903271370865811, guid: 7f480c2c5f0275949aa76bd93d759520, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -145.74
       objectReference: {fileID: 0}
     - target: {fileID: 9208903271370865811, guid: 7f480c2c5f0275949aa76bd93d759520, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -6848,6 +6848,10 @@ PrefabInstance:
     - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
       propertyPath: _moneyReward
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 44014821040864542, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
+      propertyPath: _roundPoints
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 6141620960328890235, guid: 489b58c3b5f41ab449be3ad26a0ac9c6, type: 3}
       propertyPath: m_Name
