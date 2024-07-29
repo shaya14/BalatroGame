@@ -63,7 +63,7 @@ public class Joker : MonoBehaviour
         SetActionTextEnabled(true);
 
         if (_points > 0)
-            PointsHandler.Instance.AddPoints(_points);
+            PointsHandler.Instance.AddPoints(_points , true);
         else if (_mult > 0)
             PointsHandler.Instance.AddMult(_mult);
     }
