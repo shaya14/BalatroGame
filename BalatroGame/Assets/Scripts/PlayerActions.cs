@@ -40,6 +40,11 @@ public class PlayerActions : MonoBehaviour
         GameHandler.Instance.UpdateReminingDiscards();
     }
 
+    public void NextRound()
+    {
+        GameManager.Instance.SetShopPanel(false);
+    }
+
     public void GetJoker(Joker joker)
     {
         _currentJoker = joker;

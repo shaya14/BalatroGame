@@ -26,7 +26,7 @@ public class ListsManager : MonoBehaviour
 
     // Card positions
     private float _originalYPositon = 145.74f;
-    private float _playedCardOriginalYPosition = 125.74f;
+    private float _playedCardOriginalYPosition = 113.74f;
 
     // Properties
     public bool IsPlayingHand => _isPlayingHand;
@@ -52,11 +52,11 @@ public class ListsManager : MonoBehaviour
         UpdateSelectedCardsPosition();
         if (_scoredCards.Count > 0 && !_isCoroutineRunning)
         {
-            StartCoroutine(DelayedScoredCards(_scoredCards, 1));
+            StartCoroutine(ScoredCards(_scoredCards, 1));
         }
     }
 
-    private void UpdateSelectedCardsPosition()
+    public void UpdateSelectedCardsPosition()
     {
         if (_selectedCards.Count > 0)
         {
@@ -67,11 +67,11 @@ public class ListsManager : MonoBehaviour
                 {
                     if (_isPlayingHand)
                     {
-                        rectTransform.localPosition = new Vector3(rectTransform.localPosition.x, _originalYPositon, rectTransform.localPosition.z);
+                        rectTransform.localPosition = new Vector3(rectTransform.localPosition.x, _playedCardOriginalYPosition, rectTransform.localPosition.z);
                     }
                     else
                     {
-                        rectTransform.localPosition = new Vector3(rectTransform.localPosition.x, _originalYPositon + 20, rectTransform.localPosition.z);
+                        rectTransform.localPosition = new Vector3(rectTransform.localPosition.x, _originalYPositon, rectTransform.localPosition.z);
                     }
                 }
             }
@@ -121,8 +121,19 @@ public class ListsManager : MonoBehaviour
     {
         foreach (Card card in _selectedCards)
         {
-            card.GetComponent<RectTransform>().localPosition =
-                new Vector3(card.GetComponent<RectTransform>().localPosition.x, _originalYPositon, card.GetComponent<RectTransform>().localPosition.z);
+            if (_isPlayingHand)
+            {
+                card.GetComponent<RectTransform>().localPosition =
+    new Vector3(card.GetComponent<RectTransform>().localPosition.x,
+    _playedCardOriginalYPosition, card.GetComponent<RectTransform>().localPosition.z);
+            }
+            else
+            {
+                card.GetComponent<RectTransform>().localPosition =
+    new Vector3(card.GetComponent<RectTransform>().localPosition.x,
+    _originalYPositon, card.GetComponent<RectTransform>().localPosition.z);
+            }
+
         }
         _selectedCards.Clear();
     }
@@ -240,7 +251,7 @@ public class ListsManager : MonoBehaviour
         _disableCanvas.EnableCanvasGroup();
     }
 
-    private IEnumerator DelayedScoredCards(List<Card> scoreCards, int seconds)
+    private IEnumerator ScoredCards(List<Card> scoreCards, int seconds)
     {
         _isCoroutineRunning = true;
         //Debug.Log("DelayedScoredCards coroutine started");
@@ -260,6 +271,14 @@ public class ListsManager : MonoBehaviour
         {
             card.SetTextEnabled(true);
             PointsHandler.Instance.AddPoints(card.PointsValue);
+            yield return new WaitForSeconds(0.2f);
+        }
+
+        yield return new WaitForSeconds(1);
+
+        foreach (Joker joker in _ownedJokers)
+        {
+            joker.JokerAction();
             yield return new WaitForSeconds(0.2f);
         }
 

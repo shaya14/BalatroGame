@@ -33,7 +33,9 @@ public class RoundsManager : MonoBehaviour
         {
             _rounds[index].SetIsCompleted(true);
             _rounds[index].SetIsAvailable(false);
-            _rounds[index + 1].SetIsAvailable(true);
+            if (index + 1 < _rounds.Count)
+                _rounds[index + 1].SetIsAvailable(true);
+            GameHandler.Instance.UpdatePlayerMoney(_rounds[index].MoneyReward);
             _currentRoundIndex++;
         }
     }

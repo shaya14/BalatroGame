@@ -70,32 +70,32 @@ public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     public void OnPointerClick(PointerEventData eventData)
     {
         Joker currentJoker = GetComponent<Joker>();
-        
-        if (currentJoker.IsBought)
-        {
-            return;
-        }
 
         if (_toggleClick)
         {
             if (currentJoker && !currentJoker.IsBought)
             {
+
                 _rectTransform.localPosition = new Vector3(_rectTransform.localPosition.x, _originalPositon, _rectTransform.localPosition.z);
+                currentJoker.ClearJokerInfo();
                 PlayerActions.Instance.GetJoker(null);
                 GetComponent<Joker>().EnableBuyButton(false);
                 _toggleClick = false;
                 return;
             }
-
-            ListsManager.Instance.UpdateSelectedCard(_thisCard);
-            _rectTransform.localPosition = new Vector3(_rectTransform.localPosition.x, _originalPositon, _rectTransform.localPosition.z);
-            _toggleClick = false;
+            else if (_thisCard)
+            {
+                ListsManager.Instance.UpdateSelectedCard(_thisCard);
+                _rectTransform.localPosition = new Vector3(_rectTransform.localPosition.x, _originalPositon, _rectTransform.localPosition.z);
+                _toggleClick = false;
+            }
         }
         else if (ListsManager.Instance.SelectedCards.Count < 5 && !ListsManager.Instance.IsPlayingHand)
         {
             if (currentJoker && !currentJoker.IsBought)
             {
                 _rectTransform.localPosition = new Vector3(_rectTransform.localPosition.x, _originalPositon + 10, _rectTransform.localPosition.z);
+                currentJoker.JokerInfo();
                 PlayerActions.Instance.GetJoker(currentJoker);
                 GetComponent<Joker>().EnableBuyButton(true);
                 _toggleClick = true;

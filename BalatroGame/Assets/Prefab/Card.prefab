@@ -293,7 +293,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _thisCard: {fileID: 0}
   _disableCanvas: {fileID: 0}
-  _originalPositon: 145.74
+  _originalPositon: 116
 --- !u!114 &-9094731097924035783
 MonoBehaviour:
   m_ObjectHideFlags: 0

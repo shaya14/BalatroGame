@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _gameOverPanel;
     [SerializeField] private GameObject _winScreen;
     [SerializeField] private GameObject _roundPanel;
+    [SerializeField] private GameObject _shopPanel;
 
 
     private void Awake()
@@ -26,7 +27,7 @@ public class GameManager : MonoBehaviour
         {
             Destroy(this);
         }
-        Time.timeScale = 0;
+        Time.timeScale = 1;
     }
 
     public void MakeTimeFast(int num)
@@ -60,6 +61,11 @@ public class GameManager : MonoBehaviour
         GameHandler.Instance.SetPointsToWin(round.RoundPoints);
     }
 
+    public void SetShopPanel(bool value)
+    {
+        _shopPanel.gameObject.SetActive(value);
+    }
+
     public void StartRound(Round round)
     {
         if (!round.IsRoundAvailablel)
@@ -68,6 +74,5 @@ public class GameManager : MonoBehaviour
         SetPoints(round);
         _roundPanel.gameObject.SetActive(false);
         Deck.Instance.NewRoundDeck();
-        Time.timeScale = 1;
     }
 }

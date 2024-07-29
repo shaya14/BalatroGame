@@ -8,12 +8,14 @@ public class Round : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _roundTitleText;
     [SerializeField] private TextMeshProUGUI _roundPointsText;
+    [SerializeField] private TextMeshProUGUI _moneyRewardText;
     [SerializeField] private string _roundTitle;
     [SerializeField] private int _roundPoints;
     [SerializeField] private bool _isRoundAvailable;
     [SerializeField] private Color _roundLockedColor;
     [SerializeField] private Color _roundCompletedColor;
     [SerializeField] private Button _startRoundButton;
+    [SerializeField] private int _moneyReward;
 
 
     private Color _originalColor;
@@ -21,6 +23,7 @@ public class Round : MonoBehaviour
     public int RoundPoints => _roundPoints;
     public bool IsRoundAvailablel => _isRoundAvailable;
     public bool IsRoundCompleted => _isRoundCompleted;
+    public int MoneyReward => _moneyReward;
 
     private void Awake()
     {
@@ -39,6 +42,7 @@ public class Round : MonoBehaviour
 
         _roundTitleText.text = _roundTitle;
         _roundPointsText.text = _roundPoints.ToString();
+        _moneyRewardText.text = "+ " + _moneyReward.ToString();
     }
 
     private void Update()

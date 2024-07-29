@@ -75,6 +75,7 @@ public class GameHandler : MonoBehaviour
         yield return new WaitForSeconds(2);
 
         GameManager.Instance.SetRoundPanelActive(true);
+        GameManager.Instance.SetShopPanel(true);
         RoundsManager.Instance.SetRoundCompleted(RoundsManager.Instance.CurrentRoundIndex);
         RoundsManager.Instance.ResetHandsAndPoints();
         Deck.Instance.CleanLastDeck();
@@ -112,6 +113,6 @@ public class GameHandler : MonoBehaviour
     public void UpdatePlayerMoney(int money)
     {
         _playerMoney += money;
-        _moneyText.text = $"Money: {_playerMoney}";
+        _moneyText.text = $"Money: ${_playerMoney}" ;
     }
 }

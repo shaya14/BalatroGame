@@ -67,8 +67,9 @@ public class PointsHandler : MonoBehaviour
 
     public void AddMult(float mult)
     {
-        _mult = mult;
-        _multText.text = $"{_mult}";
+        StartCoroutine(LerpMultToTotalMult(mult));
+        //_mult += mult;
+        //_multText.text = $"{_mult}";
     }
 
     public void AddTotalPoints(int points)
@@ -83,6 +84,23 @@ public class PointsHandler : MonoBehaviour
         _mult = 1;
         _multText.text = $"{_mult}";
         PokerSystem.Instance.SetTextToEmpty();
+    }
+
+    private IEnumerator LerpMultToTotalMult(float mult)
+    {
+        float time = 0;
+        float duration = 0.5f;
+
+        float startMult = _mult;
+        float endMult = _mult + mult;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            _mult = (int)Mathf.Lerp(startMult, endMult, time / duration);
+            _multText.text = $"{_mult}";
+            yield return null;
+        }
     }
 
     private IEnumerator LerpPointsToTotalPoints(int points)
