@@ -70,16 +70,25 @@ public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     public void OnPointerClick(PointerEventData eventData)
     {
         Joker currentJoker = GetComponent<Joker>();
+        Planet currentPlanet = GetComponent<Planet>();
 
         if (_toggleClick)
         {
             if (currentJoker && !currentJoker.IsBought)
             {
-
                 _rectTransform.localPosition = new Vector3(_rectTransform.localPosition.x, _originalPositon, _rectTransform.localPosition.z);
                 currentJoker.ClearJokerInfo();
                 PlayerActions.Instance.GetJoker(null);
                 GetComponent<Joker>().EnableBuyButton(false);
+                _toggleClick = false;
+                return;
+            }
+            else if (currentPlanet)
+            {
+                _rectTransform.localPosition = new Vector3(_rectTransform.localPosition.x, _originalPositon, _rectTransform.localPosition.z);
+                currentPlanet.ClearPlanetInfo();
+                PlayerActions.Instance.GetPlanet(null);
+                GetComponent<Planet>().EnableBuyButton(false);
                 _toggleClick = false;
                 return;
             }
@@ -98,6 +107,15 @@ public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
                 currentJoker.JokerInfo();
                 PlayerActions.Instance.GetJoker(currentJoker);
                 GetComponent<Joker>().EnableBuyButton(true);
+                _toggleClick = true;
+                return;
+            }
+            else if (currentPlanet)
+            {
+                _rectTransform.localPosition = new Vector3(_rectTransform.localPosition.x, _originalPositon + 10, _rectTransform.localPosition.z);
+                currentPlanet.PlanetInfo();
+                PlayerActions.Instance.GetPlanet(currentPlanet);
+                GetComponent<Planet>().EnableBuyButton(true);
                 _toggleClick = true;
                 return;
             }

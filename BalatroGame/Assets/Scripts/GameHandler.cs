@@ -49,7 +49,7 @@ public class GameHandler : MonoBehaviour
         _remainingHandsText.text = $"Hands: {_remianingHands}";
         _remainingDiscardsText.text = $"Discards: {_remianingDiscards}";
         _pointsToWinText.text = $"Win: {_pointsToWin}";
-        _moneyText.text = $"Money: {_playerMoney}";
+        _moneyText.text = $"Money: ${_playerMoney}";
 
         _originalRemianingHands = _remianingHands;
         _originalRemianingDiscards = _remianingDiscards;

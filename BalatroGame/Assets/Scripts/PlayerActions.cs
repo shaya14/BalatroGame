@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerActions : MonoBehaviour
 {
     private Joker _currentJoker;
+    private Planet _currentPlanet;
     private static PlayerActions _instance;
     public static PlayerActions Instance => _instance;
 
@@ -50,8 +51,17 @@ public class PlayerActions : MonoBehaviour
         _currentJoker = joker;
     }
 
+    public void GetPlanet(Planet planet)
+    {
+        _currentPlanet = planet;
+    }
+
     public void BuyItem()
     {
-        _currentJoker.BuyJoker();
+        if (_currentPlanet)
+            _currentPlanet.BuyPlanet();
+            
+        else if (_currentJoker)
+            _currentJoker.BuyJoker();
     }
 }

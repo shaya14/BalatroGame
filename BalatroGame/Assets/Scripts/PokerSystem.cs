@@ -44,6 +44,9 @@ public class PokerSystem : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+    }
     private void Update()
     {
         // if (ListsManager.Instance.SelectedCards.Count >= 1)
@@ -52,60 +55,69 @@ public class PokerSystem : MonoBehaviour
         // }
     }
 
+    // public void SetPointsAndMultTextToPanel(TextMeshProUGUI text)
+    // {
+    //     text.text = $"{_basePoints} x {_baseMult}";
+    // }
 
     public void DefinePokerHand(List<Card> handToCheck)
     {
         if (IsRoyalFlush(handToCheck))
         {
-            SetHandType(HandType.RoyalFlush, 100, 8, "Royal Flush");
+            SetHandType(HandType.RoyalFlush, "Royal Flush");
         }
         else if (IsStraightFlush(handToCheck))
         {
-            SetHandType(HandType.StraightFlush, 100, 8, "Straight Flush");
+            SetHandType(HandType.StraightFlush, "Straight Flush");
         }
         else if (IsFourOfAKind(handToCheck))
         {
-            SetHandType(HandType.FourOfAKind, 60, 7, "Four of a Kind");
+            SetHandType(HandType.FourOfAKind, "Four of a Kind");
         }
         else if (IsFullHouse(handToCheck))
         {
-            SetHandType(HandType.FullHouse, 40, 4, "Full House");
+            SetHandType(HandType.FullHouse, "Full House");
         }
         else if (IsFlush(handToCheck))
         {
-            SetHandType(HandType.Flush, 35, 4, "Flush");
+            SetHandType(HandType.Flush, "Flush");
         }
         else if (IsStraight(handToCheck))
         {
-            SetHandType(HandType.Straight, 30, 4, "Straight");
+            SetHandType(HandType.Straight, "Straight");
         }
         else if (IsThreeOfAKind(handToCheck))
         {
-            SetHandType(HandType.ThreeOfAKind, 30, 3, "Three of a Kind");
+            SetHandType(HandType.ThreeOfAKind, "Three of a Kind");
         }
         else if (IsTwoPair(handToCheck))
         {
-            SetHandType(HandType.TwoPair, 20, 2, "Two Pair");
+            SetHandType(HandType.TwoPair, "Two Pair");
         }
         else if (IsPair(handToCheck))
         {
-            SetHandType(HandType.Pair, 10, 2, "Pair");
+            SetHandType(HandType.Pair, "Pair");
         }
         else
         {
-            SetHandType(HandType.HighCard, 5, 1, "High Card");
+            SetHandType(HandType.HighCard, "High Card");
             FindHighestCard(handToCheck);
         }
     }
 
-    private void SetHandType(HandType handType, int basePoints, float baseMult, string debugMessage)
+    private void SetHandType(HandType handType, string debugMessage)
     {
         _handType = handType;
-        _basePoints = basePoints;
-        _baseMult = baseMult;
+        PointsHandler.Instance.SetBasePointsAndMults(handType);
         PointsHandler.Instance.SetBasePointsAndMults(_basePoints, _baseMult);
         _pokerHandText.text = $"{debugMessage}";
         Debug.Log($"Hand Type: {debugMessage} Points: {_basePoints} Multiplier: {_baseMult}");
+    }
+
+    public void SetPointAndMults(int points, float mult)
+    {
+        _basePoints = points;
+        _baseMult = mult;
     }
 
     public void SetTextToEmpty()
