@@ -26,6 +26,8 @@ public class Planet : MonoBehaviour
         RandomHandType();
         SetStatsToHand(_handType);
         _costText.text = "$" + _cost.ToString();
+        _descriptionText = GameObject.Find("Shop Description Text").GetComponent<TextMeshProUGUI>();
+        _buyButton.onClick.AddListener(BuyPlanet);
     }
 
     private void RandomHandType()
@@ -114,7 +116,7 @@ public class Planet : MonoBehaviour
 
     public void BuyPlanet()
     {
-        if (GameHandler.Instance.PlayerMoney <= _cost)
+        if (GameHandler.Instance.PlayerMoney < _cost)
         {
             return;
         }

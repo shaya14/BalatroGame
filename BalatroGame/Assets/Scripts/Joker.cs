@@ -13,12 +13,14 @@ public class Joker : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _jokerActionText;
     [SerializeField] private Transform _boughtJoskerPosition;
     [SerializeField] private string _name;
-    [SerializeField] private string _description;       
     private bool _isBought = false;
 
     [Foldout("Joker Settings")]
     [SerializeField] private int _points;
+    [SerializeField] private int _multPoints;
     [SerializeField] private int _mult;
+    [SerializeField] private float _multMult;
+    [SerializeField] private int _gold;
     [SerializeField] private int _cost;
     private float _fadeDuration = 2.0f;
 
@@ -28,6 +30,7 @@ public class Joker : MonoBehaviour
     private void Start()
     {
         _costText.text = "$" + _cost.ToString();
+        _buyButton.onClick.AddListener(BuyJoker);
     }
 
     public void ClearJokerInfo()
@@ -37,23 +40,129 @@ public class Joker : MonoBehaviour
 
     public void JokerInfo()
     {
-        _descriptionText.text = $"{_name}\n{_description}";
+        if (_gold > 0)
+        {
+            _descriptionText.text = $"<color=yellow>{_name}</color>\n +{_gold} Gold";
+            _descriptionText.color = Color.yellow;
 
-        if(_description.Contains("Mult"))
-        {
-            _descriptionText.color = Color.red;
-            
-            _jokerActionText.text = "+ " + _mult + " Mult";
-            _jokerActionText.color = Color.red;
+            _jokerActionText.text = "+" + _gold + " Gold";
+            _jokerActionText.color = Color.yellow;
+            return;
         }
-        else if (_description.Contains("Points"))
+
+        if (_points > 0 && _multPoints == 0 && _mult == 0 && _multMult == 0)
         {
+            _descriptionText.text = $"<color=yellow>{_name}</color>\n +{_points} Points";
             _descriptionText.color = Color.blue;
 
-            _jokerActionText.text = "+ " + _points + " Points";
+            _jokerActionText.text = "+" + _points + " Points";
             _jokerActionText.color = Color.blue;
         }
-    }   
+        else if (_mult > 0 && _points == 0 && _multPoints == 0 && _multMult == 0)
+        {
+            _descriptionText.text = $"<color=yellow>{_name}</color>\n +{_mult} Mult";
+            _descriptionText.color = Color.red;
+
+            _jokerActionText.text = "+" + _mult + " Mult";
+            _jokerActionText.color = Color.red;
+        }
+        else if (_multPoints > 0 && _points == 0 && _mult == 0 && _multMult == 0)
+        {
+            _descriptionText.text = $"<color=yellow>{_name}</color>\n *{_multPoints} Points";
+            _descriptionText.color = Color.blue;
+
+            _jokerActionText.text = "*" + _multPoints + " Points";
+            _jokerActionText.color = Color.blue;
+        }
+        else if (_multMult > 0 && _points == 0 && _mult == 0 && _multPoints == 0)
+        {
+            _descriptionText.text = $"<color=yellow>{_name}</color>\n *{_multMult} Mult";
+            _descriptionText.color = Color.red;
+
+            _jokerActionText.text = "*" + _multMult + " Mult";
+            _jokerActionText.color = Color.red;
+        }
+        else if (_points > 0 && _mult > 0 && _multPoints == 0 && _multMult == 0)
+        {
+            _descriptionText.text = $"<color=yellow>{_name}</color>\n +{_points} Points <color=red>+{_mult} Mult</color>";
+            _descriptionText.color = Color.blue;
+
+            _jokerActionText.text = "+" + _points + " Points\n<color=red>+" + _mult + " Mult</color>";
+            _jokerActionText.color = Color.blue;
+        }
+        else if (_points > 0 && _multPoints > 0 && _mult == 0 && _multMult == 0)
+        {
+            _descriptionText.text = $"<color=yellow>{_name}</color>\n +{_points} Points <color=blue>*{_multPoints} Points</color>";
+            _descriptionText.color = Color.blue;
+
+            _jokerActionText.text = "+" + _points + " Points\n<color=blue>*" + _multPoints + " Points</color>";
+            _jokerActionText.color = Color.blue;
+        }
+        else if (_points > 0 && _multMult > 0 && _mult == 0 && _multPoints == 0)
+        {
+            _descriptionText.text = $"<color=yellow>{_name}</color>\n +{_points} Points <color=red>*{_multMult} Mult</color>";
+            _descriptionText.color = Color.blue;
+
+            _jokerActionText.text = "+" + _points + " Points\n<color=red>*" + _multMult + " Mult</color>";
+            _jokerActionText.color = Color.blue;
+        }
+        else if (_mult > 0 && _multPoints > 0 && _points == 0 && _multMult == 0)
+        {
+            _descriptionText.text = $"<color=yellow>{_name}</color>\n +{_mult} Mult <color=blue>*{_multPoints} Points</color>";
+            _descriptionText.color = Color.red;
+
+            _jokerActionText.text = "+" + _mult + " Mult\n<color=blue>*" + _multPoints + " Points</color>";
+            _jokerActionText.color = Color.red;
+        }
+        else if (_mult > 0 && _multMult > 0 && _points == 0 && _multPoints == 0)
+        {
+            _descriptionText.text = $"<color=yellow>{_name}</color>\n +{_mult} Mult <color=red>*{_multMult} Mult</color>";
+            _descriptionText.color = Color.red;
+
+            _jokerActionText.text = "+" + _mult + " Mult\n<color=red>*" + _multMult + " Mult</color>";
+            _jokerActionText.color = Color.red;
+        }
+        else if (_points > 0 && _multPoints > 0 && _multMult > 0 && _mult == 0)
+        {
+            _descriptionText.text = $"<color=yellow>{_name}</color>\n +{_points} Points \n<color=blue>*{_multPoints} Points</color> <color=red>*{_multMult} Mult</color>";
+            _descriptionText.color = Color.blue;
+
+            _jokerActionText.text = "+" + _points + " Points\n<color=blue>*" + _multPoints + " Points</color>\n<color=red>*" + _multMult + " Mult</color>";
+            _jokerActionText.color = Color.blue;
+        }
+        else if (_mult > 0 && _multPoints > 0 && _multMult > 0 && _points == 0)
+        {
+            _descriptionText.text = $"<color=yellow>{_name}</color>\n +{_mult} Mult <color=blue>*{_multPoints} Points</color>\n <color=red>*{_multMult} Mult</color>";
+            _descriptionText.color = Color.red;
+
+            _jokerActionText.text = "+" + _mult + " Mult\n<color=blue>*" + _multPoints + " Points</color>\n<color=red>*" + _multMult + " Mult</color>";
+            _jokerActionText.color = Color.red;
+        }
+        else if (_points > 0 && _mult > 0 && _multMult > 0 && _multPoints == 0)
+        {
+            _descriptionText.text = $"<color=yellow>{_name}</color>\n +{_points} Points <color=red>+{_mult} Mult</color>\n <color=blue>*{_multMult} Mult</color>";
+            _descriptionText.color = Color.blue;
+
+            _jokerActionText.text = "+" + _points + " Points\n<color=red>+" + _mult + " Mult</color>\n<color=blue>*" + _multMult + " Mult</color>";
+            _jokerActionText.color = Color.blue;
+        }
+        else if (_points > 0 && _mult > 0 && _multPoints > 0 && _multMult == 0)
+        {
+            _descriptionText.text = $"<color=yellow>{_name}</color>\n +{_points} Points <color=red>+{_mult} Mult</color>\n <color=blue>*{_multPoints} Points</color>";
+            _descriptionText.color = Color.blue;
+
+            _jokerActionText.text = "+" + _points + " Points\n<color=red>+" + _mult + " Mult</color>\n<color=blue>*" + _multPoints + " Points</color>";
+            _jokerActionText.color = Color.blue;
+        }
+        else if (_points > 0 && _mult > 0 && _multPoints > 0 && _multMult > 0)
+        {
+            _descriptionText.text = $"<color=yellow>{_name}</color>\n +{_points} Points <color=red>+{_mult} Mult</color>\n <color=blue>*{_multPoints} Points</color> <color=red>*{_multMult} Mult</color>";
+            _descriptionText.color = Color.blue;
+
+            _jokerActionText.text = "+" + _points + " Points\n<color=red>+" + _mult + " Mult</color>\n<color=blue>*" + _multPoints + " Points</color>\n<color=red>*" + _multMult + " Mult</color>";
+            _jokerActionText.color = Color.blue;
+        }
+    }
 
     public void JokerAction()
     {
@@ -61,11 +170,87 @@ public class Joker : MonoBehaviour
 
         // Show Action Text
         SetActionTextEnabled(true);
+        ChooseJokerAction(_points, _mult, _multPoints, _multMult);
+    }
 
-        if (_points > 0)
-            PointsHandler.Instance.AddPoints(_points , true);
-        else if (_mult > 0)
+    private void ChooseJokerAction(int points, int _mult, int _multPoints, float _multMult)
+    {
+        if (_gold > 0)
+        {
+            GameHandler.Instance.UpdatePlayerMoney(_gold);
+        }
+        else
+
+                if (points > 0 && _multPoints == 0 && _mult == 0 && _multMult == 0)
+            PointsHandler.Instance.AddPoints(points, true);
+        else if (_mult > 0 && points == 0 && _multPoints == 0 && _multMult == 0)
             PointsHandler.Instance.AddMult(_mult);
+        else if (_multPoints > 0 && points == 0 && _mult == 0 && _multMult == 0)
+            PointsHandler.Instance.AddMultPoints(_multPoints, true);
+        else if (_multMult > 0 && points == 0 && _mult == 0 && _multPoints == 0)
+            PointsHandler.Instance.AddMultiplyMult(_multMult);
+        else if (points > 0 && _mult > 0 && _multPoints == 0 && _multMult == 0)
+        {
+            PointsHandler.Instance.AddPoints(points, true);
+            PointsHandler.Instance.AddMult(_mult);
+        }
+        else if (points > 0 && _multPoints > 0 && _mult == 0 && _multMult == 0)
+        {
+            PointsHandler.Instance.AddPoints(points, true);
+            PointsHandler.Instance.AddMultPoints(_multPoints, true);
+        }
+        else if (points > 0 && _multMult > 0 && _mult == 0 && _multPoints == 0)
+        {
+            PointsHandler.Instance.AddPoints(points, true);
+            PointsHandler.Instance.AddMultiplyMult(_multMult);
+        }
+        else if (_mult > 0 && _multPoints > 0 && points == 0 && _multMult == 0)
+        {
+            PointsHandler.Instance.AddMult(_mult);
+            PointsHandler.Instance.AddMultPoints(_multPoints, true);
+        }
+        else if (_mult > 0 && _multMult > 0 && points == 0 && _multPoints == 0)
+        {
+            PointsHandler.Instance.AddMult(_mult);
+            PointsHandler.Instance.AddMultiplyMult(_multMult);
+        }
+        else if (points > 0 && _multPoints > 0 && _multMult > 0 && _mult == 0)
+        {
+            PointsHandler.Instance.AddPoints(points, true);
+            PointsHandler.Instance.AddMultPoints(_multPoints, true);
+            PointsHandler.Instance.AddMultiplyMult(_multMult);
+        }
+        else if (_mult > 0 && _multPoints > 0 && _multMult > 0 && points == 0)
+        {
+            PointsHandler.Instance.AddMult(_mult);
+            PointsHandler.Instance.AddMultPoints(_multPoints, true);
+            PointsHandler.Instance.AddMultiplyMult(_multMult);
+        }
+        else if (points > 0 && _mult > 0 && _multMult > 0 && _multPoints == 0)
+        {
+            PointsHandler.Instance.AddPoints(points, true);
+            PointsHandler.Instance.AddMult(_mult);
+            PointsHandler.Instance.AddMultiplyMult(_multMult);
+        }
+        else if (points > 0 && _mult > 0 && _multPoints > 0 && _multMult == 0)
+        {
+            PointsHandler.Instance.AddPoints(points, true);
+            PointsHandler.Instance.AddMult(_mult);
+            PointsHandler.Instance.AddMultPoints(_multPoints, true);
+        }
+        else if (points > 0 && _mult > 0 && _multPoints > 0 && _multMult > 0)
+        {
+            PointsHandler.Instance.AddPoints(points, true);
+            PointsHandler.Instance.AddMultPoints(_multPoints, true);
+            PointsHandler.Instance.AddMult(_mult);
+            PointsHandler.Instance.AddMultiplyMult(_multMult);
+        }
+    }
+
+    public void ResetTextColors()
+    {
+        _descriptionText.color = Color.white;
+        _jokerActionText.color = Color.white;
     }
 
     private void SetActionTextEnabled(bool value)
@@ -118,6 +303,7 @@ public class Joker : MonoBehaviour
             return;
 
         GameHandler.Instance.UpdatePlayerMoney(-_cost);
+        ShopHandler.Instance.RemoveBoughtJoker(this);
         _buyButton.gameObject.SetActive(false);
         transform.SetParent(_boughtJoskerPosition);
         ListsManager.Instance.UpdateOwnedJokers(this);

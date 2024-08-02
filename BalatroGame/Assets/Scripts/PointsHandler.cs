@@ -71,10 +71,23 @@ public class PointsHandler : MonoBehaviour
             _pointsText.text = $"{_points}";
         }
     }
+    public void AddMultPoints(int points, bool isJoker)
+    {
+        if (isJoker)
+        {
+            StartCoroutine(LerpMultPointsToPoints(points));
+            _points += points;
+            _pointsText.text = $"{_points}";
+        }
+    }
 
     public void AddMult(float mult)
     {
         StartCoroutine(LerpMultToTotalMult(mult));
+    }
+    public void AddMultiplyMult(float mult)
+    {
+        StartCoroutine(LerpMultiplyMultToTotalMult(mult));
     }
 
     public void AddTotalPoints(int points)
@@ -108,6 +121,23 @@ public class PointsHandler : MonoBehaviour
         }
     }
 
+    private IEnumerator LerpMultiplyMultToTotalMult(float mult)
+    {
+        float time = 0;
+        float duration = 0.5f;
+
+        float startMult = _mult;
+        float endMult = _mult * mult;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            _mult = (int)Mathf.Lerp(startMult, endMult, time / duration);
+            _multText.text = $"{_mult}";
+            yield return null;
+        }
+    }
+
     private IEnumerator LerpPointsToPoints(int points)
     {
         float time = 0;
@@ -115,6 +145,24 @@ public class PointsHandler : MonoBehaviour
 
         int startPoints = _points;
         int endPoints = _points + points;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            _points = (int)Mathf.Lerp(startPoints, endPoints, time / duration);
+            _pointsText.text = $"{_points}";
+            yield return null;
+        }
+    }
+
+
+    private IEnumerator LerpMultPointsToPoints(int points)
+    {
+        float time = 0;
+        float duration = 1;
+
+        int startPoints = _points;
+        int endPoints = _points * points;
 
         while (time < duration)
         {

@@ -78,7 +78,7 @@ public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             {
                 _rectTransform.localPosition = new Vector3(_rectTransform.localPosition.x, _originalPositon, _rectTransform.localPosition.z);
                 currentJoker.ClearJokerInfo();
-                PlayerActions.Instance.GetJoker(null);
+                currentJoker.ResetTextColors();
                 GetComponent<Joker>().EnableBuyButton(false);
                 _toggleClick = false;
                 return;
@@ -87,7 +87,6 @@ public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             {
                 _rectTransform.localPosition = new Vector3(_rectTransform.localPosition.x, _originalPositon, _rectTransform.localPosition.z);
                 currentPlanet.ClearPlanetInfo();
-                PlayerActions.Instance.GetPlanet(null);
                 GetComponent<Planet>().EnableBuyButton(false);
                 _toggleClick = false;
                 return;
@@ -105,7 +104,6 @@ public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             {
                 _rectTransform.localPosition = new Vector3(_rectTransform.localPosition.x, _originalPositon + 10, _rectTransform.localPosition.z);
                 currentJoker.JokerInfo();
-                PlayerActions.Instance.GetJoker(currentJoker);
                 GetComponent<Joker>().EnableBuyButton(true);
                 _toggleClick = true;
                 return;
@@ -114,7 +112,6 @@ public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             {
                 _rectTransform.localPosition = new Vector3(_rectTransform.localPosition.x, _originalPositon + 10, _rectTransform.localPosition.z);
                 currentPlanet.PlanetInfo();
-                PlayerActions.Instance.GetPlanet(currentPlanet);
                 GetComponent<Planet>().EnableBuyButton(true);
                 _toggleClick = true;
                 return;

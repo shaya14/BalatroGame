@@ -65,6 +65,7 @@ public class GameHandler : MonoBehaviour
         else if (_pointsToWin <= PointsHandler.Instance.TotalPoints && !ListsManager.Instance.IsPlayingHand && !_isCoroutineRunning)
         {
             StartCoroutine(WinRoundCourotine());
+            ShopHandler.Instance.SetIsShopOpen(true);
         }
     }
 
