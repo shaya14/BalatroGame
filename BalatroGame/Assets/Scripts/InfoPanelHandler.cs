@@ -13,6 +13,7 @@ public class InfoPanelHandler : MonoBehaviour
 
     // Serialized fields
     [SerializeField] private GameObject _infoPanel;
+    [SerializeField] private CanvasGroup _canvasGroup;
 
 
     [Foldout("Level Texts")]
@@ -82,7 +83,6 @@ public class InfoPanelHandler : MonoBehaviour
         {
             Destroy(this);
         }
-        _infoPanel.gameObject.SetActive(false);
     }
 
     private void Start()
@@ -203,11 +203,13 @@ public class InfoPanelHandler : MonoBehaviour
     }
     public void ShowInfoPanel()
     {
-        _infoPanel.SetActive(true);
+        _canvasGroup.alpha = 1;
+        _canvasGroup.blocksRaycasts = true;
     }
 
     public void HideInfoPanel()
     {
-        _infoPanel.SetActive(false);
+        _canvasGroup.alpha = 0;
+        _canvasGroup.blocksRaycasts = false;
     }
 }

@@ -279,7 +279,7 @@ public class ListsManager : MonoBehaviour
         foreach (Joker joker in _ownedJokers)
         {
             joker.JokerAction();
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.6f);
         }
 
         yield return new WaitForSeconds(2);
