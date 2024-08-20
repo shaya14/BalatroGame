@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 // A card consists of a placeholder, and a "CardPicture".
 // The CardPicture separates from the parent transform on Init(), to avoid moving the placeholder
 // together with the picture. This separation allows the dragging,drawing,selecting animations..
-public class Card : MonoBehaviour, IPointerClickHandler
+public class Card : MonoBehaviour
 {
     // Serialized fields
     [SerializeField] private CardPicture _cardPicture;
@@ -89,9 +89,8 @@ public class Card : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    public void OnClick(PointerEventData eventData)
     {
-        Debug.Log("pointer clicked");
         if (ListsManager.Instance.IsCardSelected(this))
         {
             ListsManager.Instance.RemoveCardFromSelection(this);

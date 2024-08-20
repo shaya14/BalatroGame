@@ -99,11 +99,13 @@ public class ListsManager : MonoBehaviour
         _hand.Clear();
     }
 
-    public void AddCardToSelection(Card card) {
+    public void AddCardToSelection(Card card)
+    {
         _selectedCards.Add(card);
     }
 
-    public void RemoveCardFromSelection(Card card) {
+    public void RemoveCardFromSelection(Card card)
+    {
         _selectedCards.Remove(card);
     }
 
@@ -137,7 +139,7 @@ public class ListsManager : MonoBehaviour
         // card.gameObject.GetComponent<Dragable>().SetDisableCanvas(_handHolder.GetComponent<DisableCanvas>());
         card.transform.localScale = new Vector3(1f, 1f, 1f);
     }
-    
+
     // CR: I think this hould also be delayed, just like the "discrdfromstaging".
     public void DiscardHand()
     {
@@ -181,24 +183,24 @@ public class ListsManager : MonoBehaviour
     {
         foreach (Card card in cardsToDiscard)
         {
-			if (card == null) // CR: can this happen? if not - delete. if yes - explain how.
-			{
-				Debug.LogWarning("Card is null. Skipping...");
-				continue;
-			}
+            if (card == null) // CR: can this happen? if not - delete. if yes - explain how.
+            {
+                Debug.LogWarning("Card is null. Skipping...");
+                continue;
+            }
 
-			if (_hand.Contains(card))
-			{
-				_hand.Remove(card);
-				card.transform.SetParent(_handHolder.DiscardedCards.transform);
-				card.rectTransform.localPosition = Vector3.zero;
-				LayoutRebuilder.ForceRebuildLayoutImmediate(_playedCards.GetComponent<RectTransform>());
-				yield return new WaitForSeconds(card.timeForPictureToReachPlaceholder);
-			}
-			else  // CR: can this happen? if not - delete. if yes - explain how.
-			{
-				Debug.LogWarning("Card not found in hand. Skipping...");
-			}
+            if (_hand.Contains(card))
+            {
+                _hand.Remove(card);
+                card.transform.SetParent(_handHolder.DiscardedCards.transform);
+                card.rectTransform.localPosition = Vector3.zero;
+                LayoutRebuilder.ForceRebuildLayoutImmediate(_playedCards.GetComponent<RectTransform>());
+                yield return new WaitForSeconds(card.timeForPictureToReachPlaceholder);
+            }
+            else  // CR: can this happen? if not - delete. if yes - explain how.
+            {
+                Debug.LogWarning("Card not found in hand. Skipping...");
+            }
         }
 
         _selectedCards.Clear();
@@ -220,8 +222,10 @@ public class ListsManager : MonoBehaviour
         foreach (Card card in _selectedCards)
         {
             card.transform.SetParent(_playedCards.transform);
+            LayoutRebuilder.ForceRebuildLayoutImmediate(_handHolder.GetComponent<RectTransform>());
+            LayoutRebuilder.ForceRebuildLayoutImmediate(_playedCards.GetComponent<RectTransform>());
             _disableCanvas.DisableCanvasGroup();
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(card.timeForPictureToReachPlaceholder);
         }
     }
 
@@ -277,13 +281,16 @@ public class ListsManager : MonoBehaviour
         //Debug.Log("DelayedScoredCards coroutine ended");
     }
 
-    public bool IsCardSelected(Card card) {
-      foreach (Card c in _selectedCards) {
-        if (card == c) {
-          return true;
+    public bool IsCardSelected(Card card)
+    {
+        foreach (Card c in _selectedCards)
+        {
+            if (card == c)
+            {
+                return true;
+            }
         }
-      }
 
-      return false;
+        return false;
     }
 }
