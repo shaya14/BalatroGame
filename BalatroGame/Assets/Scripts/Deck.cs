@@ -91,10 +91,10 @@ public class Deck : MonoBehaviour
         for (int i = 0; i < numOfCardsToAdd; i++)
         {
             // CR: [discuss] RemoveAt(count - 1) is more efficient than RemoveAt(0), due to the way lists are implemented.
-            yield return new WaitForSeconds(0.2f);
             Card card = _deck[0];
             _deck.RemoveAt(0);
             ListsManager.Instance.AddToHand(card);
+            yield return new WaitForSeconds(card.timeForPictureToReachPlaceholder);
         }
     }
 }

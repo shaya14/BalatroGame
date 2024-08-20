@@ -177,7 +177,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -213.7, y: -64.5}
+  m_AnchoredPosition: {x: 1500, y: -64.5}
   m_SizeDelta: {x: 140, y: 180}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3631840451244810928
@@ -202,7 +202,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -271,10 +271,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e07bb5a8fdf813145b48cc9a4e3fa093, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _image: {fileID: 124370874098138457}
+  _cardPicture: {fileID: 6695889862523301652}
   _pointsText: {fileID: 7031070293426966421}
   _fadeDuration: 0.6
-  _speed: 150
   _unselectedY: 114
   _selectedY: 145
 --- !u!114 &-9094731097924035783
@@ -336,6 +335,7 @@ GameObject:
   - component: {fileID: 8903556655345492752}
   - component: {fileID: 7114684246972708453}
   - component: {fileID: 124370874098138457}
+  - component: {fileID: 6695889862523301652}
   m_Layer: 5
   m_Name: CardPicture
   m_TagString: Untagged
@@ -384,7 +384,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -400,3 +400,16 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6695889862523301652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7544420339289962679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 660f2add47dba4c3e88557baa30cb918, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 1000

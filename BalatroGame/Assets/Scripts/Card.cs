@@ -4,13 +4,15 @@ using TMPro;
 using System.Collections;
 using UnityEngine.EventSystems;
 
+// A card consists of a placeholder, and a "CardPicture".
+// The CardPicture separates from the parent transform on Init(), to avoid moving the placeholder
+// together with the picture. This separation allows the dragging,drawing,selecting animations..
 public class Card : MonoBehaviour, IPointerClickHandler
 {
     // Serialized fields
-    [SerializeField] private Image _image;
+    [SerializeField] private CardPicture _cardPicture;
     [SerializeField] private TextMeshProUGUI _pointsText;
     [SerializeField] private float _fadeDuration;
-    [SerializeField] private float _speed;
 
     // TODO: move this elsewhere
     [SerializeField] private float _unselectedY;
@@ -26,6 +28,7 @@ public class Card : MonoBehaviour, IPointerClickHandler
     // Properties
     public string Suit => _suit;
     public string Rank => _rank;
+    public RectTransform rectTransform => _rectTransform;
 
     private void Awake()
     {
@@ -34,30 +37,11 @@ public class Card : MonoBehaviour, IPointerClickHandler
 
     public void InitCard(string suit, string rank)
     {
+        // TODO: remove 'this' - you already have the _ to signify a private-field.
         this._suit = suit;
         this._rank = rank;
-        LoadCardSprite();
+        _cardPicture.Init(this);
         _pointsText.text = $"+{PointsValue}";
-    }
-
-    public void Update() {
-        _image.rectTransform.localPosition = Vector2.MoveTowards(
-          _image.rectTransform.localPosition,
-          Vector2.zero,
-          _speed * Time.deltaTime
-        );
-    }
-
-    private void MovePlaceholder(Vector2 placeholderLocalPosition) {
-      Vector2 pictureGlobalPosition = _image.rectTransform.position;
-
-      _rectTransform.localPosition = placeholderLocalPosition;
-      _image.rectTransform.position = pictureGlobalPosition;
-    }
-
-    private void LoadCardSprite()
-    {
-        _image.sprite = Resources.Load<Sprite>($"Cards/{_suit}_{_rank}");
     }
 
     public void SetTextEnabled(bool value)
@@ -87,28 +71,44 @@ public class Card : MonoBehaviour, IPointerClickHandler
         _pointsText.gameObject.SetActive(false); // Optionally disable the text object after fade-out
     }
 
-  public int PointsValue { get {
-      return _rank switch
+    public int PointsValue
+    {
+        get
         {
-            "J" or "Q" or "K" => 10,
-            "A" => 11,
-            _ => int.TryParse(_rank, out var value) ? value : 0
-        };
-    }}
-
-  public void OnPointerClick(PointerEventData eventData) {
-  {
-      if (ListsManager.Instance.IsCardSelected(this))
-      {
-          ListsManager.Instance.RemoveCardFromSelection(this);
-          MovePlaceholder(new Vector3(_rectTransform.localPosition.x, _unselectedY, _rectTransform.localPosition.z));
-      }
-      else if (ListsManager.Instance.SelectedCards.Count < 5 && !ListsManager.Instance.IsPlayingHand)
-      {
-          ListsManager.Instance.AddCardToSelection(this);
-          MovePlaceholder(new Vector3(_rectTransform.localPosition.x, _selectedY, _rectTransform.localPosition.z));
-      }
+            return _rank switch
+            {
+                "J" or "Q" or "K" => 10,
+                "A" => 11,
+                _ => int.TryParse(_rank, out var value) ? value : 0
+            };
+        }
     }
-  }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        Debug.Log("pointer clicked");
+        if (ListsManager.Instance.IsCardSelected(this))
+        {
+            ListsManager.Instance.RemoveCardFromSelection(this);
+            _rectTransform.localPosition = new Vector3(
+                _rectTransform.localPosition.x,
+                _unselectedY,
+                _rectTransform.localPosition.z
+            );
+        }
+        else if (ListsManager.Instance.SelectedCards.Count < 5 && !ListsManager.Instance.IsPlayingHand)
+        {
+            ListsManager.Instance.AddCardToSelection(this);
+            _rectTransform.localPosition = new Vector3(
+                _rectTransform.localPosition.x,
+                _selectedY,
+                _rectTransform.localPosition.z
+            );
+        }
+    }
+
+    public float timeForPictureToReachPlaceholder =>
+      Vector2.Distance(_rectTransform.position, _cardPicture.rectTransform.position)
+      / _cardPicture.speed;
 
 }

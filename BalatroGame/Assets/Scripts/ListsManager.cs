@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ListsManager : MonoBehaviour
 {
@@ -132,6 +133,7 @@ public class ListsManager : MonoBehaviour
         _hand.Add(card);
         card.gameObject.SetActive(true);
         card.transform.SetParent(_handHolder.transform);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(_handHolder.GetComponent<RectTransform>());
         // card.gameObject.GetComponent<Dragable>().SetDisableCanvas(_handHolder.GetComponent<DisableCanvas>());
         card.transform.localScale = new Vector3(1f, 1f, 1f);
     }
