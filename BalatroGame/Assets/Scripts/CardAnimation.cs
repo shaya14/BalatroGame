@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class CardAnimation : MonoBehaviour
 {
+    // CR: no defaults in the code!
     [SerializeField] private float _moveSpeed = 1.0f;
     [SerializeField] private float _rotationSpeed = 1.0f;
     [SerializeField] private float _rotationSpeedZ = 1.0f;

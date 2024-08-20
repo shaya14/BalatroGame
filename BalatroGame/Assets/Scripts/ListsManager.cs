@@ -69,10 +69,6 @@ public class ListsManager : MonoBehaviour
                     {
                         rectTransform.localPosition = new Vector3(rectTransform.localPosition.x, _playedCardOriginalYPosition, rectTransform.localPosition.z);
                     }
-                    else
-                    {
-                        rectTransform.localPosition = new Vector3(rectTransform.localPosition.x, _originalYPositon, rectTransform.localPosition.z);
-                    }
                 }
             }
         }
@@ -102,19 +98,12 @@ public class ListsManager : MonoBehaviour
         _hand.Clear();
     }
 
-    public void UpdateSelectedCard(Card card)
-    {
-        if (!_selectedCards.Contains(card))
-        {
-            if (_selectedCards.Count <= 4)
-            {
-                _selectedCards.Add(card);
-            }
-        }
-        else
-        {
-            _selectedCards.Remove(card);
-        }
+    public void AddCardToSelection(Card card) {
+        _selectedCards.Add(card);
+    }
+
+    public void RemoveCardFromSelection(Card card) {
+        _selectedCards.Remove(card);
     }
 
     public void ClearSelectedCardList()
@@ -143,7 +132,7 @@ public class ListsManager : MonoBehaviour
         _hand.Add(card);
         card.gameObject.SetActive(true);
         card.transform.SetParent(_handHolder.transform);
-        card.gameObject.GetComponent<Dragable>().SetDisableCanvas(_handHolder.GetComponent<DisableCanvas>());
+        // card.gameObject.GetComponent<Dragable>().SetDisableCanvas(_handHolder.GetComponent<DisableCanvas>());
         card.transform.localScale = new Vector3(1f, 1f, 1f);
     }
     public void DiscardHand()
@@ -293,5 +282,15 @@ public class ListsManager : MonoBehaviour
         _isCoroutineRunning = false;
         _isPlayingHand = false;
         //Debug.Log("DelayedScoredCards coroutine ended");
+    }
+
+    public bool IsCardSelected(Card card) {
+      foreach (Card c in _selectedCards) {
+        if (card == c) {
+          return true;
+        }
+      }
+
+      return false;
     }
 }

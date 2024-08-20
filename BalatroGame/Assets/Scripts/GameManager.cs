@@ -16,7 +16,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _roundPanel;
     [SerializeField] private GameObject _shopPanel;
 
-
     private void Awake()
     {
         if (_instance == null)

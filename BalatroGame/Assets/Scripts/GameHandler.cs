@@ -20,6 +20,7 @@ public class GameHandler : MonoBehaviour
     [SerializeField] private int _playerMoney = 0;
 
     // Serialized Text fields
+    // CR: consider moving these to another class, that updates them on Update [Model-View design pattern]
     [SerializeField] private TextMeshProUGUI _remainingHandsText;
     [SerializeField] private TextMeshProUGUI _remainingDiscardsText;
     [SerializeField] private TextMeshProUGUI _pointsToWinText;
@@ -51,6 +52,7 @@ public class GameHandler : MonoBehaviour
         _pointsToWinText.text = $"Win: {_pointsToWin}";
         _moneyText.text = $"Money: ${_playerMoney}";
 
+        // CR: consider flipping these around i think ("orgiinal/initial" should be the SerializedField)
         _originalRemianingHands = _remianingHands;
         _originalRemianingDiscards = _remianingDiscards;
     }

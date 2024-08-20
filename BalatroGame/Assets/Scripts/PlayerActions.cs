@@ -7,8 +7,6 @@ public class PlayerActions : MonoBehaviour
     private static PlayerActions _instance;
     public static PlayerActions Instance => _instance;
 
-
-
     private void Awake()
     {
         if (_instance == null)
