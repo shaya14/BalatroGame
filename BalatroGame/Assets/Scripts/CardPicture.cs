@@ -21,6 +21,7 @@ public class CardPicture : MonoBehaviour
 
     public void Init(Card card)
     {
+        gameObject.SetActive(true);
         _image.sprite = Resources.Load<Sprite>($"Cards/{card.Suit}_{card.Rank}");
         _cardPlaceholder = card;
         transform.SetParent(CardPicturesTransformParent.instance.transform);

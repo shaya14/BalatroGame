@@ -44,6 +44,11 @@ public class Card : MonoBehaviour, IPointerClickHandler
         _pointsText.text = $"+{PointsValue}";
     }
 
+    public void Hide() {
+        _cardPicture.gameObject.SetActive(false);
+        this.gameObject.SetActive(false);
+    }
+
     public void SetTextEnabled(bool value)
     {
         _pointsText.gameObject.SetActive(value);

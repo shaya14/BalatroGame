@@ -137,6 +137,8 @@ public class ListsManager : MonoBehaviour
         // card.gameObject.GetComponent<Dragable>().SetDisableCanvas(_handHolder.GetComponent<DisableCanvas>());
         card.transform.localScale = new Vector3(1f, 1f, 1f);
     }
+    
+    // CR: I think this hould also be delayed, just like the "discrdfromstaging".
     public void DiscardHand()
     {
         List<Card> cardsToDiscard = new List<Card>(_selectedCards);
@@ -154,7 +156,7 @@ public class ListsManager : MonoBehaviour
                 {
                     _hand.Remove(card);
                     card.transform.SetParent(_handHolder.DiscardedCards.transform);
-                    card.gameObject.SetActive(false);
+                    card.Hide();
                 }
                 else
                 {
@@ -175,37 +177,28 @@ public class ListsManager : MonoBehaviour
         Deck.Instance.AddToHand(cardsToDiscard.Count);
     }
 
-    public void DiscardHand(List<Card> cardsToDiscard)
+    public IEnumerator DiscardHand(List<Card> cardsToDiscard)
     {
         foreach (Card card in cardsToDiscard)
         {
-            try
-            {
-                if (card == null)
-                {
-                    Debug.LogWarning("Card is null. Skipping...");
-                    continue;
-                }
+			if (card == null) // CR: can this happen? if not - delete. if yes - explain how.
+			{
+				Debug.LogWarning("Card is null. Skipping...");
+				continue;
+			}
 
-                if (_hand.Contains(card))
-                {
-                    _hand.Remove(card);
-                    card.transform.SetParent(_handHolder.DiscardedCards.transform);
-                    card.gameObject.SetActive(false);
-                }
-                else
-                {
-                    Debug.LogWarning("Card not found in hand. Skipping...");
-                }
-            }
-            catch (ObjectDisposedException ex)
-            {
-                Debug.LogError($"ObjectDisposedException: {ex.Message}");
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError($"Exception: {ex.Message}");
-            }
+			if (_hand.Contains(card))
+			{
+				_hand.Remove(card);
+				card.transform.SetParent(_handHolder.DiscardedCards.transform);
+				card.rectTransform.localPosition = Vector3.zero;
+				LayoutRebuilder.ForceRebuildLayoutImmediate(_playedCards.GetComponent<RectTransform>());
+				yield return new WaitForSeconds(card.timeForPictureToReachPlaceholder);
+			}
+			else  // CR: can this happen? if not - delete. if yes - explain how.
+			{
+				Debug.LogWarning("Card not found in hand. Skipping...");
+			}
         }
 
         _selectedCards.Clear();
@@ -232,13 +225,11 @@ public class ListsManager : MonoBehaviour
         }
     }
 
-    private IEnumerator DelayedDiscardHand(float seconds)
+    private IEnumerator DelayedDiscardHand()
     {
         //Debug.Log("DelayedDiscardHand coroutine started");
         List<Card> cardsToDiscard = new List<Card>(_selectedCards);
-        yield return new WaitForSeconds(seconds);
-        DiscardHand(cardsToDiscard);
-        yield return new WaitForSeconds(1);
+        yield return DiscardHand(cardsToDiscard);
         _disableCanvas.EnableCanvasGroup();
     }
 
@@ -275,7 +266,7 @@ public class ListsManager : MonoBehaviour
 
         yield return new WaitForSeconds(2);
         PointsHandler.Instance.CalculateTotalPoints();
-        StartCoroutine(DelayedDiscardHand(_timeToDiscard));
+        yield return DelayedDiscardHand();
         ClearSelectedCardList();
         ClearScoredCards();
 
