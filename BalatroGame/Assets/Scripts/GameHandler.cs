@@ -19,13 +19,6 @@ public class GameHandler : MonoBehaviour
     private bool _isCoroutineRunning = false;
     [SerializeField] private int _playerMoney = 0;
 
-    // Serialized Text fields
-    // CR: consider moving these to another class, that updates them on Update [Model-View design pattern]
-    [SerializeField] private TextMeshProUGUI _remainingHandsText;
-    [SerializeField] private TextMeshProUGUI _remainingDiscardsText;
-    [SerializeField] private TextMeshProUGUI _pointsToWinText;
-    [SerializeField] private TextMeshProUGUI _moneyText;
-
     // Properties
     public int RemainingHands => _remianingHands;
     public int RemainingDiscards => _remianingDiscards;
@@ -47,11 +40,6 @@ public class GameHandler : MonoBehaviour
 
     private void Start()
     {
-        _remainingHandsText.text = $"Hands: {_remianingHands}";
-        _remainingDiscardsText.text = $"Discards: {_remianingDiscards}";
-        _pointsToWinText.text = $"Win: {_pointsToWin}";
-        _moneyText.text = $"Money: ${_playerMoney}";
-
         // CR: consider flipping these around i think ("orgiinal/initial" should be the SerializedField)
         _originalRemianingHands = _remianingHands;
         _originalRemianingDiscards = _remianingDiscards;
@@ -91,31 +79,25 @@ public class GameHandler : MonoBehaviour
     {
         _remianingHands = _originalRemianingHands;
         _remianingDiscards = _originalRemianingDiscards;
-        _remainingHandsText.text = $"Hands: {_remianingHands}";
-        _remainingDiscardsText.text = $"Discards: {_remianingDiscards}";
     }
 
     public void UpdateReminingHands()
     {
         _remianingHands--;
-        _remainingHandsText.text = $"Hands: {_remianingHands}";
     }
 
     public void UpdateReminingDiscards()
     {
         _remianingDiscards--;
-        _remainingDiscardsText.text = $"Discards: {_remianingDiscards}";
     }
 
     public void SetPointsToWin(int points)
     {
         _pointsToWin = points;
-        _pointsToWinText.text = $"Win: {_pointsToWin}";
     }
 
     public void UpdatePlayerMoney(int money)
     {
         _playerMoney += money;
-        _moneyText.text = $"Money: ${_playerMoney}" ;
     }
 }
