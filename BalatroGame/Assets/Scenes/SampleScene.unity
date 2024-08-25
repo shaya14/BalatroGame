@@ -13872,8 +13872,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 077f71080bed2014886aeb7c6eecebf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _remianingHands: 4
-  _remianingDiscards: 2
+  _initialRemianingHands: 4
+  _initialRemianingDiscards: 2
   _pointsToWin: 300
   _playerMoney: 3
 --- !u!1001 &1945667622

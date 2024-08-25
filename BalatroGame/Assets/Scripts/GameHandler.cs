@@ -11,13 +11,14 @@ public class GameHandler : MonoBehaviour
     public static GameHandler Instance => _instance;
 
     // Serialized fields
-    [SerializeField] private int _remianingHands;
-    [SerializeField] private int _remianingDiscards;
+    [SerializeField] private int _initialRemianingHands;
+    [SerializeField] private int _initialRemianingDiscards;
     [SerializeField] private int _pointsToWin;
-    private int _originalRemianingHands;
-    private int _originalRemianingDiscards;
-    private bool _isCoroutineRunning = false;
     [SerializeField] private int _playerMoney = 0;
+    
+    private int _remianingHands;
+    private int _remianingDiscards;
+    private bool _isCoroutineRunning = false;
 
     // Properties
     public int RemainingHands => _remianingHands;
@@ -40,9 +41,8 @@ public class GameHandler : MonoBehaviour
 
     private void Start()
     {
-        // CR: consider flipping these around i think ("orgiinal/initial" should be the SerializedField)
-        _originalRemianingHands = _remianingHands;
-        _originalRemianingDiscards = _remianingDiscards;
+        _remianingHands = _initialRemianingHands;
+        _remianingDiscards = _initialRemianingDiscards;
     }
 
     private void Update()
@@ -77,8 +77,8 @@ public class GameHandler : MonoBehaviour
 
     public void ResetHandsAndDiscards()
     {
-        _remianingHands = _originalRemianingHands;
-        _remianingDiscards = _originalRemianingDiscards;
+        _remianingHands = _initialRemianingHands;
+        _remianingDiscards = _initialRemianingDiscards;
     }
 
     public void UpdateReminingHands()
