@@ -146,33 +146,9 @@ public class ListsManager : MonoBehaviour
         List<Card> cardsToDiscard = new List<Card>(_selectedCards);
         foreach (Card card in cardsToDiscard)
         {
-            try
-            {
-                if (card == null)
-                {
-                    Debug.LogWarning("Card is null. Skipping...");
-                    continue;
-                }
-
-                if (_hand.Contains(card))
-                {
-                    _hand.Remove(card);
-                    card.transform.SetParent(_handHolder.DiscardedCards.transform);
-                    card.Hide();
-                }
-                else
-                {
-                    Debug.LogWarning("Card not found in hand. Skipping...");
-                }
-            }
-            catch (ObjectDisposedException ex)
-            {
-                Debug.LogError($"ObjectDisposedException: {ex.Message}");
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError($"Exception: {ex.Message}");
-            }
+            _hand.Remove(card);
+            card.transform.SetParent(_handHolder.DiscardedCards.transform);
+            card.Hide();
         }
 
         _selectedCards.Clear();
@@ -183,28 +159,16 @@ public class ListsManager : MonoBehaviour
     {
         foreach (Card card in cardsToDiscard)
         {
-            if (card == null) // CR: can this happen? if not - delete. if yes - explain how.
-            {
-                Debug.LogWarning("Card is null. Skipping...");
-                continue;
-            }
-
-            if (_hand.Contains(card))
-            {
-                _hand.Remove(card);
-                card.transform.SetParent(_handHolder.DiscardedCards.transform);
-                card.rectTransform.localPosition = Vector3.zero;
-                LayoutRebuilder.ForceRebuildLayoutImmediate(_playedCards.GetComponent<RectTransform>());
-                yield return new WaitForSeconds(card.timeForPictureToReachPlaceholder);
-            }
-            else  // CR: can this happen? if not - delete. if yes - explain how.
-            {
-                Debug.LogWarning("Card not found in hand. Skipping...");
-            }
+            _hand.Remove(card);
+            card.transform.SetParent(_handHolder.DiscardedCards.transform);
+            card.rectTransform.localPosition = Vector3.zero;
+            LayoutRebuilder.ForceRebuildLayoutImmediate(_playedCards.GetComponent<RectTransform>());
+            yield return new WaitForSeconds(card.timeForPictureToReachPlaceholder);
         }
 
         _selectedCards.Clear();
         Deck.Instance.AddToHand(cardsToDiscard.Count);
+
     }
 
     public void PlayedHand()
